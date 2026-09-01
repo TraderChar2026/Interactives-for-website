@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Affecting Your Patient's Cellular Health?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#fff; --oxidative:#a85a6b; --slate:#7d8fa8; --amber:#c98a3e;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+    color:var(--charcoal);font-family:'Lato',sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:46px 22px 70px;}
+
+  .eyebrow{font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.22em;
+    font-size:11.5px;color:var(--forest);font-weight:700;margin-bottom:12px;}
+  h1{font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:clamp(27px,4.6vw,43px);line-height:1.07;letter-spacing:-.015em;color:var(--ink);margin:0 0 14px;}
+  .lede{font-size:17px;line-height:1.6;max-width:700px;margin:0 0 30px;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;}
+  .chip{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.02em;
+    padding:11px 20px;border-radius:999px;border:1.5px solid var(--pale-sage);
+    background:var(--white);color:var(--forest);cursor:pointer;
+    transition:background .15s,border-color .15s,transform .1s;
+  }
+  .chip:hover{background:var(--light-sage);}
+  .chip:active{transform:scale(.97);}
+  .chip:focus-visible{outline:2.5px solid var(--forest);outline-offset:2px;}
+  .chip.on{background:var(--forest);color:var(--white);border-color:var(--forest);}
+
+  .stage{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start;}
+  @media(max-width:820px){.stage{grid-template-columns:1fr;}}
+
+  .cellcard{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:18px;
+    padding:20px;box-shadow:0 4px 18px rgba(28,37,57,.05);text-align:center;
+  }
+  .cellcard svg{display:block;width:100%;height:auto;}
+  .cell-state{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12px;
+    text-transform:uppercase;letter-spacing:.12em;margin-top:12px;color:var(--forest);
+  }
+  .cell-note{font-size:12.5px;line-height:1.5;opacity:.75;margin-top:6px;}
+
+  .flow{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:18px;
+    padding:26px 28px;box-shadow:0 4px 18px rgba(28,37,57,.05);min-height:330px;
+  }
+  .flow-title{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:20px;
+    color:var(--ink);margin:0 0 4px;}
+  .flow-sub{font-size:14px;line-height:1.55;opacity:.85;margin:0 0 20px;}
+
+  .step{display:flex;gap:14px;opacity:0;transform:translateY(6px);
+    animation:rise .38s ease forwards;}
+  @keyframes rise{to{opacity:1;transform:translateY(0);}}
+  .step-rail{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:20px;}
+  .step-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+  .step-line{width:2px;flex:1;background:var(--pale-sage);margin:3px 0;min-height:14px;}
+  .step-body{padding-bottom:15px;}
+  .step-t{font-weight:700;color:var(--ink);font-size:15px;line-height:1.35;}
+  .step-d{font-size:13.5px;line-height:1.5;opacity:.82;margin-top:3px;}
+  .step:last-child .step-line{display:none;}
+  .step:last-child .step-t{color:var(--oxidative);}
+
+  .seen{background:var(--bg-1);border-radius:13px;padding:17px 19px;margin:4px 0 18px;}
+  .seen-h{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.13em;color:var(--forest);margin-bottom:11px;}
+  .seen-row{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid var(--pale-sage);}
+  .seen-row:last-of-type{border-bottom:none;}
+  .seen-sys{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;
+    color:var(--ink);min-width:118px;flex-shrink:0;}
+  .seen-txt{font-size:13px;line-height:1.5;}
+  .seen-note{font-size:11.5px;line-height:1.5;opacity:.7;margin-top:10px;font-style:italic;}
+  .placeholder{padding:60px 10px;text-align:center;opacity:.6;font-size:15px;line-height:1.55;}
+
+  .askbtn{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:14.5px;letter-spacing:.02em;
+    background:var(--forest);color:var(--white);border:none;border-radius:999px;
+    padding:13px 26px;cursor:pointer;margin-top:6px;box-shadow:0 5px 16px rgba(65,90,78,.26);
+  }
+  .askbtn:hover{box-shadow:0 7px 20px rgba(65,90,78,.34);}
+  .askbtn:focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;}
+
+  .support{
+    margin-top:20px;background:var(--light-sage);border-radius:14px;padding:20px 22px;
+    animation:rise .35s ease forwards;
+  }
+  .support-h{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:9px;}
+  .support p{margin:0 0 12px;font-size:14.5px;line-height:1.6;}
+  .support p:last-of-type{margin-bottom:14px;}
+  .sup-list{margin:14px 0 4px;}
+  .sup-row{padding:9px 0;border-bottom:1px solid rgba(65,90,78,.14);}
+  .sup-row:last-child{border-bottom:none;}
+  .sup-t{display:block;font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:14px;color:var(--ink);margin-bottom:2px;}
+  .sup-d{display:block;font-size:13.5px;line-height:1.5;}
+  .sup-caveat{background:var(--white);border-radius:11px;padding:13px 15px;margin:14px 0;
+    font-size:13px;line-height:1.55;opacity:.9;}
+  .links{display:flex;flex-wrap:wrap;gap:9px;}
+  .links a{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;
+    text-decoration:none;background:var(--white);color:var(--forest);
+    border:1.5px solid var(--pale-sage);border-radius:999px;padding:9px 17px;
+  }
+  .links a:hover{background:var(--white);border-color:var(--forest);}
+
+  .footnote{margin-top:30px;padding-top:18px;border-top:1px solid var(--pale-sage);
+    font-size:12.5px;line-height:1.6;opacity:.75;}
+  @media(prefers-reduced-motion:reduce){.step,.support{animation:none;opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Cellular Health &middot; Start Here</div>
+  <h1>What Is Affecting Your Patient's Cellular Health?</h1>
+  <p class="lede">Pick what you see in front of you. Each one runs downstream to the same place, and the route it takes tells you where to intervene.</p>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="stage">
+    <div class="cellcard">
+      <svg viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-label="A cell whose condition changes as the cascade plays">
+        <ellipse id="memb" cx="110" cy="110" rx="92" ry="86" fill="rgba(220,229,221,0.35)" stroke="#b0a08d" stroke-width="5"/>
+        <ellipse cx="110" cy="110" rx="30" ry="26" fill="rgba(97,73,33,0.15)" stroke="rgba(97,73,33,0.5)" stroke-width="2"/>
+        <text x="110" y="114" text-anchor="middle" font-family="Lato,sans-serif" font-size="10" fill="rgba(97,73,33,0.75)">nucleus</text>
+        <g id="mitos">
+          <ellipse cx="62"  cy="72"  rx="17" ry="9" fill="#7d8fa8" transform="rotate(-25 62 72)"/>
+          <ellipse cx="158" cy="80"  rx="17" ry="9" fill="#7d8fa8" transform="rotate(20 158 80)"/>
+          <ellipse cx="70"  cy="152" rx="17" ry="9" fill="#7d8fa8" transform="rotate(15 70 152)"/>
+          <ellipse cx="152" cy="148" rx="17" ry="9" fill="#7d8fa8" transform="rotate(-18 152 148)"/>
+        </g>
+        <g id="ros"></g>
+      </svg>
+      <div class="cell-state" id="cellState">Baseline</div>
+      <div class="cell-note" id="cellNote">Select an input above to trace its route.</div>
+    </div>
+
+    <div class="flow" id="flow">
+      <div class="placeholder">Every input on this page ends at the same place &mdash; the cell stops working properly. What differs is the road it takes, and each road has a different point where you can intervene.</div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    These cascades summarise mechanisms described in the peer-reviewed literature cited throughout this site. They compress multi-step biology into a readable chain and omit feedback loops, individual variation, and the many points where these routes cross. Nothing here diagnoses, treats, cures or prevents any disease.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var C = {ox:'#a85a6b', inf:'#c98a3e', nut:'#415A4E', mic:'#759C8A',
+           mito:'#7d8fa8', env:'#8f6f4a', age:'#8a6d8f'};
+
+  var MAP = [
+    {
+      id:'ox', label:'Oxidative stress', color:C.ox,
+      title:'Oxidative stress', lead:'Reactive oxygen species outpace the enzymes that clear them.',
+      state:'Under oxidative load', note:'Free radicals accumulate faster than the cell neutralises them.',
+      steps:[
+        {t:'Production exceeds capacity', d:'Metabolism, immune activity and outside exposures generate reactive oxygen species faster than superoxide dismutase, catalase and glutathione enzymes clear them.'},
+        {t:'Molecules take damage', d:'Free radicals oxidise membrane lipids, misfold proteins, and strike mitochondrial DNA, which sits beside the source with little protection.'},
+        {t:'NF-\u03baB switches on', d:'Oxidative signals activate NF-\u03baB, the transcription factor that turns on inflammatory genes.'},
+        {t:'Inflammation feeds back', d:'Inflammatory activity generates further reactive oxygen species, so the loop reinforces itself rather than settling.'},
+        {t:'Cellular function declines', d:'Damaged membranes, misfolded proteins and failing mitochondria leave the cell less able to do its job or repair itself.'}
+      ],
+      seen:{
+        h:'Where oxidative stress shows up in the patient',
+        note:'Oxidative damage accumulates silently for years before it produces a complaint. These presentations reflect established associations, not a diagnostic pattern.',
+        rows:[
+          ['Cardiovascular','Oxidised LDL drives plaque formation, and oxidative pressure stiffens arteries and impairs endothelial nitric oxide signalling.'],
+          ['Neurological','Neurons burn oxygen heavily and carry high lipid content, so oxidative damage strikes them early. Researchers document it across Alzheimer\u2019s, Parkinson\u2019s and ALS pathology.'],
+          ['Metabolic','Oxidative damage interferes with insulin receptor signalling and stresses pancreatic beta cells, which carry unusually low antioxidant enzyme levels.'],
+          ['Musculoskeletal','Patients report slow recovery after exertion, persistent soreness and reduced exercise tolerance out of proportion to their conditioning.'],
+          ['Skin','Ultraviolet light and pollution oxidise collagen and elastin, producing visible aging faster than chronological age accounts for.']
+        ]
+      },
+      support:{
+        text:'Nrf2 is the switch that answers this. Activating it induces the cell\u2019s own superoxide dismutase, catalase and glutathione enzymes. One superoxide dismutase molecule neutralises millions of free radicals per second and comes out of every cycle intact. Exercise and specific dietary compounds activate Nrf2. Human trials of supplement-based activation ran anywhere from 7 days to 120 days, in populations from trained runners to patients with alcohol use disorders, measuring different endpoints. The effects that appear show up in older subjects and in those starting with lower antioxidant capacity.',
+        links:[['Nrf2 and antioxidant defence','#nrf2'],['Vitamin C vs. SOD','#sod'],['Oxidative load profiler','#profiler']]
+      }
+    },
+    {
+      id:'inf', label:'Inflammation', color:C.inf,
+      title:'Chronic inflammation', lead:'Persistent immune signalling that never resolves.',
+      state:'Inflammatory signalling', note:'The immune response stays switched on.',
+      steps:[
+        {t:'Immune activation persists', d:'Infection, injury, visceral fat, dysbiosis or autoimmunity keeps immune cells signalling past the point where the trigger has passed.'},
+        {t:'Cytokines circulate', d:'Activated immune cells release inflammatory cytokines that act on tissues throughout the body, not only at the original site.'},
+        {t:'Immune cells generate free radicals', d:'The respiratory burst that immune cells use against pathogens produces reactive oxygen species in surrounding tissue.'},
+        {t:'Mitochondria take damage', d:'Oxidative pressure damages mitochondria, which then leak more electrons and generate still more reactive oxygen species.'},
+        {t:'Cellular function declines', d:'The cell spends its energy managing inflammation instead of maintaining and repairing itself.'}
+      ],
+      seen:{
+        h:'Where chronic inflammation shows up in the patient',
+        note:'Low-grade inflammation rarely announces itself. It surfaces as a pattern of complaints across systems rather than a single finding.',
+        rows:[
+          ['Laboratory','CRP or ESR sits mildly elevated with no acute source. Ferritin rises as an acute-phase reactant and misleads iron assessment.'],
+          ['Joints and muscle','Patients describe morning stiffness, diffuse aching and fatigue that rest does not resolve.'],
+          ['Cardiovascular','Inflammatory signalling drives plaque instability, and the residual risk that persists after statins brought LDL to target.'],
+          ['Metabolic','Inflammatory cytokines interfere with insulin signalling directly, so inflammation both follows metabolic dysfunction and worsens it.'],
+          ['Cognitive and mood','Inflammation shunts tryptophan down the kynurenine pathway and away from serotonin synthesis, which is one route to the fatigue, low mood and mental fog patients report before anything else.']
+        ]
+      },
+      support:{
+        text:'You interrupt this loop from the oxidative side. Lowering the reactive oxygen species burden removes part of what keeps NF-\u03baB switched on. The body builds resolvins and protectins from the omega-3 fatty acids EPA and DHA. They actively turn inflammation off and help repair damaged tissue, rather than simply blocking the inflammatory signal. One serving of oily fish reaches the omega-3 dose used in trials.',
+        links:[['Oxidative stress and inflammation','#oxinf'],['Inside the cell','#cell'],['Can you get it from food?','#food']]
+      }
+    },
+    {
+      id:'nut', label:'Western diet', color:C.nut,
+      title:'The modern Western diet', lead:'What the Western diet supplies, and what it leaves out.',
+      state:'Low nutrient supply', note:'The Western diet leaves out what the cell\u2019s defences run on.',
+      steps:[
+        {t:'Fiber diversity falls', d:'The modern Western diet builds on refined carbohydrate and delivers little fermentable fiber to the colon, so the bacteria that depend on it starve. Americans average roughly 15 grams of fiber a day against a 25 to 38 gram recommendation. A traditional Mediterranean diet, built on legumes, vegetables, olive oil and fish, delivers 30 to 40.'},
+        {t:'Nrf2-activating compounds go missing', d:'Cruciferous vegetables, allium compounds, carotenoids and long-chain omega-3s activate antioxidant enzyme production. The Western diet supplies little of any of them.'},
+        {t:'Antioxidant enzyme output drops', d:'With fewer activating signals arriving, the cell produces less superoxide dismutase, catalase and glutathione enzyme.'},
+        {t:'Oxidative load rises unopposed', d:'Ordinary metabolic and environmental stress now meets weaker defences, so more damage gets through.'},
+        {t:'Cellular function declines', d:'Repair and maintenance slow because the cell lacks both the signals to build defences and the raw material to rebuild what breaks.'}
+      ],
+      seen:{
+        h:'Where the Western diet shows up in the patient',
+        note:'These reflect what the Western diet leaves out, separate from caloric adequacy. A patient can carry excess weight and still lack the compounds their defences depend on.',
+        rows:[
+          ['Gastrointestinal','The low fiber content produces constipation, poor stool form and reduced microbial diversity within three to four days of the dietary switch.'],
+          ['Metabolic','Refined carbohydrate drives postprandial glucose swings, and the resulting insulin demand accelerates central fat deposition.'],
+          ['Energy','Patients describe mid-afternoon crashes and cravings that track their glucose curve rather than their actual energy needs.'],
+          ['Immune','Zinc, selenium, vitamin D and vitamin C shortfalls each impair immune function, and the Western diet commonly produces more than one at once.'],
+          ['Skin, hair and nails','Skin renews every four to six weeks and hair follicles divide faster than almost any cell in the body, so shortfalls surface here before they surface anywhere else.']
+        ]
+      },
+      support:{
+        text:'Move the patient toward whole foods and away from ultra-processed ones. The evidence here runs unusually strong for nutrition research. In a controlled inpatient trial where meals matched for calories, sugar, fat, fiber and macronutrients, people eating ultra-processed food ate about 500 more calories a day and gained weight, while the same people on the unprocessed diet lost it. Nobody told either group to change how much they ate.',
+        list:[
+          ['Count the ingredients','Past four or five, most of what appears on the label extends shelf life or improves mouthfeel rather than feeding anyone. Use it as a shopping rule, not a law \u2014 canned beans list two ingredients and plain yoghurt lists one.'],
+          ['Cook with whole foods','A meal built from vegetables, meat or fish, a whole grain and olive oil carries no emulsifiers, no added sugar and no colourings, and the patient never reads a label to know it.'],
+          ['Push fiber past the recommendation, not to it','Legumes, vegetables, whole grains, berries and nuts. Americans average 15 grams against a 25 to 38 gram recommendation, and diversity of plant sources matters as much as the total.'],
+          ['Two servings of oily fish a week','Salmon, sardines or mackerel. One serving reaches the EPA and DHA dose used in trials, which no other food group delivers.'],
+          ['Cook with olive oil, butter or avocado oil','Corn, soybean, sunflower and canola oil carry the linoleic acid that competes with omega-3s. They also appear in nearly every ultra-processed food, so a patient who switches cooking oils and stops buying packaged food removes most of their intake at once.'],
+          ['Buy organic where residue concentrates','Oats carry the highest glyphosate residues of any cereal, and the produce a patient eats daily matters more than the produce they eat occasionally. Organic reliably means lower pesticide residue; it does not reliably mean more nutritious.']
+        ],
+        caveat:'Cut seed oils because they crowd out omega-3s. The n-6 to n-3 ratio in wealthy countries now exceeds 15:1, and industrial seed oils drove it there. Linoleic acid and omega-3s compete for the same desaturase and elongase enzymes, so heavy n-6 intake starves the conversion to EPA and DHA. Those two fatty acids supply the raw material for resolvins and protectins \u2014 specialised lipid molecules the body builds to actively turn inflammation off and repair the damaged tissue, rather than simply blocking the inflammatory signal the way an NSAID does. Less EPA and DHA means fewer resolvins and protectins, so inflammation persists instead of resolving. That is how acute inflammation turns into chronic inflammation.',
+        links:[['Can you get it from food?','#food'],['Feed the microbiome','#microbiome'],['Nrf2 and antioxidant defence','#nrf2']]
+      }
+    },
+    {
+      id:'mic', label:'Microbiome', color:C.mic,
+      title:'Dysbiosis', lead:'An imbalance in the gut microbial community.',
+      state:'Barrier under strain', note:'Butyrate and indoles fall; endotoxin crosses the lining.',
+      steps:[
+        {t:'Microbial balance shifts', d:'Low-fiber diets, antibiotics, and illness can disrupt the gut microbiome\u2014allowing sugar-adapted microbes to thrive while beneficial fiber-fermenting bacteria decline.'},
+        {t:'Metabolic changes', d:'When the gut microbiome becomes imbalanced, protective signals decline while inflammatory signals increase.<br><br>Butyrate-producing bacteria decline, reducing support for regulatory T cells and normal immune regulation. At the same time, beneficial tryptophan-derived indoles may decline, weakening AhR signaling involved in IL-22 production and gut-barrier repair.<br><br>Meanwhile, increases in bacterial components such as lipopolysaccharide (LPS) can activate TLR4 and NF-\u03baB, promoting inflammatory signaling.<br><br>The microbiome also communicates with the brain through the gut-brain axis. Short-chain fatty acids influence serotonin production by enterochromaffin cells in the gut. That serotonin doesn\u2019t need to travel to the brain\u2014it activates receptors on the vagus nerve, which carries the signal to the brainstem.<br><br>The communication also works in reverse. Vagal signaling can help regulate inflammation through the cholinergic anti-inflammatory pathway.<br><br>Finally, inflammation can alter tryptophan metabolism, shifting it away from serotonin production and toward the kynurenine pathway. This provides another important connection between the microbiome, inflammation and brain function.<br><br><b>The takeaway:</b> The microbiome doesn\u2019t simply affect digestion. Through microbial metabolites, immune signaling and the vagus nerve, it can influence inflammation, barrier integrity, appetite, and brain function.'},
+        {t:'Intestinal permeability increases', d:'Colonocytes run on butyrate. Without enough of it the tight junctions between them loosen, and bacterial products pass between the cells into the tissue beneath and on into circulation. A low-fiber diet thins the mucus layer from two directions: bacteria forage on it, and less butyrate reaches the goblet cells that make it.'},
+        {t:'Inflammatory signaling increases', d:'When the intestinal barrier is compromised, bacterial endotoxins can enter circulation, activating the immune system and promoting inflammation beyond the gut.'},
+        {t:'Oxidative stress increases', d:'Inflammation increases reactive oxygen species while the loss of microbiome-derived Nrf2 activators may weaken the body\u2019s antioxidant defenses\u2014leaving cells less able to manage the increased oxidative burden.'}
+      ],
+      seen:{
+        h:'Where dysbiosis shows up in the patient',
+        note:'These associations differ in strength. The digestive, barrier and metabolic links carry the most support; the neuropsychiatric link rests largely on animal work and small human trials.',
+        rows:[
+          ['Digestive','Bloating, gas, abdominal pain, altered bowel habit. Associations with IBS, IBD and nutrient malabsorption.'],
+          ['Immune','Increased intestinal permeability lets bacterial endotoxin cross into circulation, driving chronic systemic inflammation and raising susceptibility to infection.'],
+          ['Metabolic and endocrine','Altered insulin sensitivity and energy harvest. Associations with obesity, type 2 diabetes, fatty liver and metabolic syndrome.'],
+          ['Skin and oral','Acne, atopic dermatitis, bleeding gums and dental caries \u2014 local expressions of a systemic imbalance.'],
+          ['Nervous system','Gut bacteria influence serotonin and dopamine production, and researchers have proposed links to anxiety, low mood, fatigue and cognitive complaints through the gut-brain axis. Human evidence here remains early.']
+        ]
+      },
+      support:{
+        text:'Feed the probiotics with prebiotic fibers. Without prebiotic fibers, probiotics cannot re-establish themselves in the microbiome. They arrive with nothing to consume, gain no advantage over the established microflora, and die off.<br><br>The microbiome may also influence the body\u2019s antioxidant defenses. For example, metabolites associated with <i>Lactobacillus rhamnosus GG</i> have been shown to activate Nrf2 signaling, linking gut microbial activity with cellular antioxidant defense.',
+
+        links:[['Feed the microbiome','#microbiome'],['Microbiome and metabolic health','#micro-page'],['Nrf2 and antioxidant defence','#nrf2']]
+      }
+    },
+    {
+      id:'mito', label:'Mitochondria', color:C.mito,
+      title:'Mitochondrial dysfunction', lead:'The cell\u2019s energy supply degrades, and the damage accelerates.',
+      state:'Energy supply failing', note:'Damaged mitochondria leak more than healthy ones.',
+      steps:[
+        {t:'Mitochondria take damage', d:'Roughly 90% of cellular reactive oxygen species come from the electron transport chain, and mitochondrial DNA sits directly beside that source with little protective packaging.'},
+        {t:'Damaged mitochondria leak more free radicals', d:'Faulty electron transport components leak more electrons, generating more reactive oxygen species and increasing the damage to mitochondria.'},
+        {t:'ATP production falls', d:'Fewer functioning mitochondria means less ATP available for the cellular repair, cleanup, and rebuilding required for recovery.'},
+        {t:'Released fragments stimulate an immune response', d:'Damaged mitochondria can release their DNA into the cell. Because mitochondrial DNA resembles bacterial DNA, the immune system may recognize it as a danger signal\u2014activating cGAS-STING, TLR9 and NLRP3 and triggering inflammatory cytokines.<br><br>In effect, the cell can mount an immune response against its own damaged mitochondria.'},
+        {t:'Cellular function declines', d:'With fewer functioning mitochondria, the cell produces less ATP\u2014leaving less energy available for repair and recovery.'}
+      ],
+      seen:{
+        h:'Where mitochondrial dysfunction shows up in the patient',
+        note:'Mitochondria concentrate in the tissues that use the most energy, so symptoms cluster there \u2014 muscle, brain, heart and endocrine organs.',
+        rows:[
+          ['Exercise tolerance','Patients experience fatigue greater than cardiopulmonary findings would predict, with post-exertional symptoms that worsen hours after activity rather than improve with rest.'],
+          ['Muscle','Muscle pain or unexplained weakness\u2014sometimes accompanied by elevated CK\u2014without another identifiable cause, particularly in patients taking statins.'],
+          ['Cognitive','Brain tissue consumes roughly 20% of resting energy, so patients report mental fog that worsens the longer they concentrate on a demanding task.'],
+          ['Cardiac','Cardiomyocytes carry the highest mitochondrial density in the body. Dysfunction contributes to heart failure with preserved ejection fraction.'],
+          ['Laboratory','Elevated resting lactate and an early anaerobic threshold during exercise may indicate that cells are relying on anaerobic metabolism sooner than expected.']
+        ]
+      },
+      support:{
+        text:'Activating Nrf1 supports mitochondrial biogenesis\u2014the production of new mitochondria\u2014while mitophagy removes damaged ones. Exercise is one of the best-supported ways to stimulate mitochondrial renewal, although this response may lessen with age.<br><br>NAD+ also plays an important role by supporting sirtuin activity involved in regulating mitochondrial biogenesis and cellular energy metabolism.<br><br>Together, these pathways help the cell remove damaged mitochondria and replace them with healthier, more functional ones.',
+
+        links:[['Nrf1 and mitochondrial biogenesis','#nrf1'],['NAD+ and cellular energy','#nad'],['Inside the cell','#cell']]
+      }
+    },
+    {
+      id:'env', label:'Environmental stress', color:C.env,
+      title:'Environmental exposure', lead:'What the patient breathes, absorbs and encounters.',
+      state:'Detox demand high', note:'Phase II enzymes spend glutathione clearing these compounds.',
+      steps:[
+        {t:'Environmental exposures increase oxidative stress', d:'Smoke, air pollution, solvents, heavy metals, pesticide residue and ultraviolet light all reach the cell and all generate reactive oxygen species.'},
+        {t:'Detoxification demands increase', d:'Phase II detoxification enzymes help neutralize and eliminate harmful compounds. This process uses glutathione, increasing the demand on the cell\u2019s antioxidant defenses.'},
+        {t:'Antioxidant reserves fall', d:'When more glutathione is needed for detoxification, less antioxidant capacity may be available to manage reactive oxygen species generated through normal metabolism.'},
+        {t:'Antioxidant defenses become depleted', d:'As antioxidant reserves decline, cells become less able to neutralize everyday oxidative stress\u2014increasing the potential for damage to membranes, proteins, and mitochondrial DNA.'},
+        {t:'Cellular function declines', d:'Damage accumulates faster than clearance and rebuilding can keep pace with.'}
+      ],
+      seen:{
+        h:'Where environmental exposure shows up in the patient',
+        note:'Exposure history rarely appears in a standard review of systems. Asking about occupation, housing and commute surfaces contributors that laboratory work will not.',
+        rows:[
+          ['Respiratory','Particulate exposure inflames airways directly and worsens asthma and COPD control independent of medication adherence.'],
+          ['Cardiovascular','Fine particulate air pollution is associated with an increased risk of heart attack and stroke\u2014and that risk can rise within days of high exposure.'],
+          ['Hepatic','The liver clears solvents, pesticides and heavy metals, and that work consumes glutathione the body would otherwise spend elsewhere.'],
+          ['Neurological','Heavy metals and organic solvents accumulate in nervous tissue, producing headache, poor concentration, and peripheral symptoms such as numbness, tingling, burning pain in the hands and feet, and reduced grip strength.'],
+          ['Occupational history','Painters, mechanics, agricultural workers, hairdressers, nail technicians and firefighters all carry documented exposure profiles worth asking about by name.']
+        ]
+      },
+      support:{
+        text:'<b>Activate Nrf2.</b> Activating Nrf2 strengthens the cell\u2019s own defense systems, increasing expression of antioxidant and Phase II detoxification enzymes that help manage oxidative stress and environmental exposures.<br><br>Reducing the exposure itself remains the first priority; Nrf2 activation helps strengthen the cell\u2019s ability to respond to the oxidative burden that remains.',
+
+        links:[['Oxidative load profiler','#profiler'],['Nrf2 and antioxidant defence','#nrf2'],['Can you get it from food?','#food']]
+      }
+    },
+    {
+      id:'age', label:'Aging', color:C.age,
+      title:'Aging', lead:'Defence and repair capacity fall as accumulated damage rises.',
+      state:'Reserve narrowing', note:'The same insult now produces more damage.',
+      steps:[
+        {t:'NAD+ declines', d:'The pool falls across tissues with age. Sirtuins depend on it for mitochondrial biogenesis, autophagy and DNA repair, so all three slow together.'},
+        {t:'Nrf2 activation may decline with age', d:'In one study, 30 minutes of cycling raised nuclear Nrf2 in men aged 23 but not in men aged 63, and downstream antioxidant gene expression fell in the older group. Researchers call it exercise desensitisation.'},
+        {t:'Mitochondrial damage accumulates with age', d:'Over time, repeated oxidative stress can damage mitochondria, reducing their efficiency and increasing the production of reactive oxygen species\u2014creating a cycle of further mitochondrial stress and cellular damage.'},
+        {t:'Cellular repair becomes less efficient', d:'Declining NAD+ and ATP availability can limit the energy and signaling needed to remove damaged components and support cellular repair.'},
+        {t:'Cellular resilience declines', d:'As cellular defense and repair systems become less efficient with age, stressors that were once well tolerated may have a greater biological impact.'}
+      ],
+      seen:{
+        h:'Where narrowing reserve shows up in the patient',
+        note:'These changes should not be dismissed as aging alone. They may be signs that the body\u2019s cellular defense, energy, and repair systems are becoming less resilient.',
+        rows:[
+          ['Recovery','The same illness, injury or hard effort now takes noticeably longer to recover from than it did a decade earlier.'],
+          ['Muscle','As mitochondrial function and muscle protein synthesis decline with age, muscle mass and strength can progressively decrease\u2014a process known as sarcopenia. Grip strength provides a simple clinical measure of this loss of muscle function and is associated with mortality risk, disability, and longer hospital stays\u2014even after accounting for age and other health conditions.'],
+          ['Metabolic','Insulin sensitivity declines and visceral fat accumulates even when weight and diet hold steady.'],
+          ['Cognitive function','The brain requires a continuous supply of energy to function. As cellular energy production becomes less efficient with age, processing speed may slow\u2014often before noticeable changes in memory occur.'],
+          ['Response to exercise may decline','Older adults may show a smaller cellular response to the same exercise stimulus. This is not necessarily a lack of effort\u2014age-related changes in pathways such as Nrf2 may reduce the body\u2019s ability to activate antioxidant defenses and adapt to exercise.']
+        ]
+      },
+      support:{
+        text:'<b>Restore pathway activation.</b> Aging may reduce the responsiveness of cellular defense and repair pathways, but these pathways can still be activated. Regular aerobic exercise has been shown to help restore Nrf2 responsiveness in older adults, strengthening the cell\u2019s ability to respond to oxidative stress.<br><br>Targeted nutritional and biological activators may provide additional support by activating pathways involved in antioxidant defense, mitochondrial function, energy production, and cellular repair. The goal is not simply to address the effects of aging, but to help restore the cellular systems that maintain function and resilience.',
+
+        links:[['NAD+ and cellular energy','#nad'],['Nrf1 and mitochondrial biogenesis','#nrf1'],['Oxidative load profiler','#profiler']]
+      }
+    }
+  ];
+
+  function el(id){ return document.getElementById(id); }
+
+  // build chips
+  var ch = el('chips'), html='';
+  for (var i=0;i<MAP.length;i++){
+    html += '<button class="chip" data-id="'+MAP[i].id+'">'+MAP[i].label+'</button>';
+  }
+  ch.innerHTML = html;
+
+  function setCell(m){
+    var memb = el('memb'), mitos = el('mitos'), ros = el('ros');
+    if (!m){
+      memb.setAttribute('stroke','#b0a08d');
+      mitos.setAttribute('fill','none');
+      var kids = mitos.children;
+      for (var k=0;k<kids.length;k++) kids[k].setAttribute('fill','#7d8fa8');
+      ros.innerHTML='';
+      el('cellState').textContent='Baseline';
+      el('cellNote').textContent='Select an input above to trace its route.';
+      return;
+    }
+    memb.setAttribute('stroke', m.color);
+    var kids2 = el('mitos').children;
+    for (var j=0;j<kids2.length;j++){
+      kids2[j].setAttribute('fill', (m.id==='mito'||m.id==='age') ? '#8f4356' : '#7d8fa8');
+    }
+    // scatter markers in the accent colour
+    var pts='';
+    for (var p=0;p<26;p++){
+      var a=Math.random()*Math.PI*2, r=Math.sqrt(Math.random())*0.86;
+      var x=110+Math.cos(a)*88*r, y=110+Math.sin(a)*82*r;
+      pts += '<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="2.6" fill="'+m.color+'" opacity="0.75"/>';
+    }
+    el('ros').innerHTML = pts;
+    el('cellState').textContent = m.state;
+    el('cellNote').textContent = m.note;
+  }
+
+  function render(m){
+    var f = el('flow'), h='';
+    h += '<div class="flow-title">'+m.title+'</div>';
+    h += '<div class="flow-sub">'+m.lead+'</div>';
+    for (var i=0;i<m.steps.length;i++){
+      var s=m.steps[i];
+      h += '<div class="step" style="animation-delay:'+(i*0.09)+'s">'+
+             '<div class="step-rail"><span class="step-dot" style="background:'+m.color+'"></span><span class="step-line"></span></div>'+
+             '<div class="step-body"><div class="step-t">'+s.t+'</div><div class="step-d">'+s.d+'</div></div>'+
+           '</div>';
+    }
+    if (m.seen){
+      var rw='';
+      for (var v=0;v<m.seen.rows.length;v++){
+        rw += '<div class="seen-row"><span class="seen-sys">'+m.seen.rows[v][0]+'</span>'+
+              '<span class="seen-txt">'+m.seen.rows[v][1]+'</span></div>';
+      }
+      h += '<div class="seen"><div class="seen-h">'+m.seen.h+'</div>'+rw+
+           '<div class="seen-note">'+m.seen.note+'</div></div>';
+    }
+    h += '<button class="askbtn" id="askBtn">How can this route be supported?</button>';
+    h += '<div id="supportSlot"></div>';
+    f.innerHTML = h;
+
+    el('askBtn').addEventListener('click', function(){
+      var lk='';
+      for (var q=0;q<m.support.links.length;q++){
+        lk += '<a href="'+m.support.links[q][1]+'">'+m.support.links[q][0]+'</a>';
+      }
+      var ls='';
+      if (m.support.list){
+        for (var n=0;n<m.support.list.length;n++){
+          ls += '<div class="sup-row"><span class="sup-t">'+m.support.list[n][0]+'</span>'+
+                '<span class="sup-d">'+m.support.list[n][1]+'</span></div>';
+        }
+        ls = '<div class="sup-list">'+ls+'</div>';
+      }
+      var cv = m.support.caveat ? '<div class="sup-caveat">'+m.support.caveat+'</div>' : '';
+      el('supportSlot').innerHTML =
+        '<div class="support"><div class="support-h">How to intervene</div>'+
+        '<p>'+m.support.text+'</p>'+ls+cv+'<div class="links">'+lk+'</div></div>';
+      el('askBtn').style.display='none';
+    });
+  }
+
+  var chips = document.querySelectorAll('.chip');
+  for (var b=0;b<chips.length;b++){
+    (function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-id'), m=null;
+        for (var z=0;z<MAP.length;z++) if (MAP[z].id===id) m=MAP[z];
+        if (!m) return;
+        for (var y=0;y<chips.length;y++) chips[y].classList.remove('on');
+        btn.classList.add('on');
+        setCell(m); render(m);
+      });
+    })(chips[b]);
+  }
+
+  setCell(null);
+})();
+</script>
+</body>
+</html>

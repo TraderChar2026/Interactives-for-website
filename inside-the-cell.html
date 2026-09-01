@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside the Cell Under Oxidative Stress — Cellular Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#fff; --oxidative:#a85a6b; --slate:#7d8fa8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+    color:var(--charcoal);font-family:'Lato',sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:44px 22px 72px;}
+  .eyebrow{
+    font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.22em;
+    font-size:11.5px;color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  h1{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:clamp(26px,4.3vw,40px);line-height:1.08;letter-spacing:-.015em;
+    color:var(--ink);margin:0 0 14px;
+  }
+  .thesis{font-size:17px;line-height:1.62;max-width:720px;margin:0;}
+  .thesis b{color:var(--ink);}
+
+  .howto{background:var(--light-sage);border-radius:16px 16px 0 0;padding:18px 24px;margin:28px 0 0;}
+  .howto-h{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:8px;
+  }
+  .howto ol{margin:0;padding-left:19px;}
+  .howto li{font-size:14.5px;line-height:1.55;margin-bottom:6px;}
+  .howto li:last-child{margin-bottom:0;}
+
+  .controls{
+    background:var(--white);border:1px solid var(--pale-sage);border-top:none;
+    border-radius:0 0 16px 16px;padding:20px 24px;margin:0 0 18px;
+    box-shadow:0 4px 16px rgba(28,37,57,.04);
+    display:flex;gap:24px;align-items:flex-end;flex-wrap:wrap;
+  }
+  .slider-group{flex:1 1 260px;min-width:220px;}
+  .ctrl-label{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);display:block;margin-bottom:8px;
+  }
+  input[type=range]{width:100%;accent-color:var(--forest);cursor:pointer;}
+  .load-read{font-size:13px;opacity:.8;margin-top:5px;}
+  .btn-group{display:flex;gap:10px;flex-wrap:wrap;}
+  .speed-row{display:flex;gap:6px;}
+  .spd{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13px;
+    padding:10px 15px;border-radius:999px;border:1.5px solid var(--pale-sage);
+    background:transparent;color:var(--forest);cursor:pointer;min-width:48px;
+  }
+  .spd:hover{background:var(--light-sage);}
+  .spd.active{background:var(--forest);color:var(--white);border-color:var(--forest);}
+  button{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;letter-spacing:.03em;
+    font-size:14px;border-radius:999px;padding:12px 22px;border:none;cursor:pointer;
+    transition:transform .12s,box-shadow .12s,background .15s;
+  }
+  button:active{transform:scale(.97);}
+  button:focus-visible{outline:2.5px solid var(--forest);outline-offset:2px;}
+  .btn-activate{background:var(--forest);color:var(--white);box-shadow:0 5px 16px rgba(65,90,78,.26);}
+  .btn-activate:hover{box-shadow:0 7px 20px rgba(65,90,78,.34);}
+  .btn-reset{background:transparent;color:var(--forest);border:1.5px solid var(--pale-sage);}
+  .btn-reset:hover{background:var(--light-sage);}
+
+  .stage{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:16px;
+    overflow:hidden;box-shadow:0 4px 16px rgba(28,37,57,.04);
+  }
+  canvas{display:block;width:100%;height:400px;background:#fdfcfa;}
+  .cv-key{
+    display:flex;gap:16px;flex-wrap:wrap;padding:13px 20px;
+    border-top:1px solid var(--pale-sage);font-size:12px;opacity:.85;align-items:center;
+  }
+  .cv-key span{display:flex;align-items:center;gap:6px;}
+  .ksw{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0;}
+
+  .readouts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:18px;}
+  .ro{background:var(--white);border:1px solid var(--pale-sage);border-radius:14px;padding:15px 17px;
+      box-shadow:0 4px 16px rgba(28,37,57,.04);}
+  .ro-k{font-size:11px;text-transform:uppercase;letter-spacing:.1em;
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;opacity:.7;margin-bottom:7px;}
+  .ro-v{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:22px;color:var(--ink);line-height:1;}
+  .ro-bar{height:8px;background:var(--light-sage);border-radius:999px;overflow:hidden;margin-top:8px;}
+  .ro-fill{height:100%;width:0%;transition:width .3s;}
+  .ro-sub{font-size:11.5px;line-height:1.4;opacity:.65;margin-top:7px;}
+
+  .takeaway{
+    margin-top:34px;background:var(--white);border-left:5px solid var(--forest);
+    border-radius:14px;padding:24px 28px;box-shadow:0 4px 16px rgba(28,37,57,.04);
+  }
+  .takeaway h2{font-family:'Roboto Condensed',sans-serif;font-size:20px;color:var(--ink);margin:0 0 12px;}
+  .takeaway p{font-size:15.5px;line-height:1.65;margin:0 0 12px;}
+  .takeaway p:last-child{margin-bottom:0;}
+  .footnote{margin-top:28px;padding-top:18px;border-top:1px solid var(--pale-sage);font-size:12.5px;line-height:1.6;opacity:.75;}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Cellular Health &middot; Oxidative Stress</div>
+  <h1>Inside the Cell Under Oxidative Stress</h1>
+  <p class="thesis">Mitochondria produce most of the cell's reactive oxygen species. Those species damage mitochondria first. <b>That is a loop, not a line.</b> Damaged mitochondria leak more, the leak damages more mitochondria, and the cell accumulates injury faster the longer it runs. Turn up the load and watch where the damage lands.</p>
+
+  <div class="howto">
+    <div class="howto-h">How to use this</div>
+    <ol>
+      <li>Raise <b>oxidative load</b> and watch reactive oxygen species pour out of the mitochondria.</li>
+      <li>Watch the four readouts below fill: membrane, mitochondrial pool, proteins, and inflammatory signaling.</li>
+      <li>Notice the mitochondria darkening. Damaged ones leak more, which damages more of them &mdash; the loop accelerating on its own.</li>
+      <li>Click <b>Activate Nrf2</b>. Antioxidant enzymes appear and clear the reactive oxygen species. Membrane damage stops climbing, but the damaged mitochondria stay damaged.</li>
+      <li>Now click <b>Activate Nrf1</b>. New mitochondria appear, outlined in blue as they are built, and the worst-damaged ones get cleared. The mitochondrial pool improves &mdash; something Nrf2 alone cannot do.</li>
+      <li>Watch the <b>NAD+ pool</b> fall as damage accumulates. PARP enzymes spend it repairing DNA.</li>
+      <li>Run <b>Nrf1</b> with NAD+ drained, then hit <b>Restore NAD+</b>. Biogenesis stalls without it and speeds up when the pool comes back.</li>
+      <li>Turn on <b>Clearance &amp; rebuild</b>. Now protein oxidation and membrane damage fall &mdash; the first thing in this panel that runs damage <i>backwards</i>. Notice it barely works while reactive oxygen species are still everywhere, and speeds up once Nrf2 clears them.</li>
+      <li>Try each alone, then all four. They do different jobs.</li>
+    </ol>
+  </div>
+
+  <div class="controls">
+    <div class="slider-group">
+      <label class="ctrl-label" for="load">Oxidative load</label>
+      <input type="range" id="load" min="0" max="10" value="4" aria-describedby="loadRead">
+      <div class="load-read" id="loadRead">Moderate &mdash; ordinary metabolic and environmental stress</div>
+    </div>
+    <div>
+      <span class="ctrl-label">Speed</span>
+      <div class="speed-row">
+        <button class="spd" data-spd="1">1&times;</button>
+        <button class="spd active" data-spd="2">2&times;</button>
+        <button class="spd" data-spd="4">4&times;</button>
+        <button class="spd" data-spd="8">8&times;</button>
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn-activate" id="nrf2Btn">Activate Nrf2 &mdash; antioxidant enzymes</button>
+      <button class="btn-activate" id="nrf1Btn" style="background:#7d8fa8;box-shadow:0 5px 16px rgba(125,143,168,.3)">Activate Nrf1 &mdash; mitochondrial biogenesis</button>
+      <button class="btn-activate" id="nadBtn" style="background:#614921;box-shadow:0 5px 16px rgba(97,73,33,.3)">Restore NAD+</button>
+      <button class="btn-activate" id="repairBtn" style="background:#8a6d4a;box-shadow:0 5px 16px rgba(138,109,74,.3)">Clearance &amp; rebuild</button>
+      <button class="btn-reset" id="resetBtn">Reset the cell</button>
+    </div>
+  </div>
+
+  <div class="stage">
+    <canvas id="cvs" width="980" height="400" aria-label="Cross-section of a cell showing reactive oxygen species damaging the membrane, mitochondria and nucleus"></canvas>
+    <div class="cv-key">
+      <span><i class="ksw" style="background:#a85a6b"></i> Reactive oxygen species</span>
+      <span><i class="ksw" style="background:#7d8fa8"></i> Mitochondria</span>
+      <span><i class="ksw" style="background:#614921"></i> Nucleus</span>
+      <span><i class="ksw" style="background:#415A4E"></i> Antioxidant enzymes (Nrf2)</span>
+      <span><i class="ksw" style="background:#7d8fa8;box-shadow:0 0 0 2px rgba(125,143,168,.55)"></i> Newly built mitochondria (Nrf1)</span>
+    </div>
+  </div>
+
+  <div class="readouts">
+    <div class="ro">
+      <div class="ro-k">Membrane damage</div>
+      <div class="ro-v" id="vMem">0%</div>
+      <div class="ro-bar"><div class="ro-fill" id="fMem" style="background:#a85a6b"></div></div>
+      <div class="ro-sub">Lipid peroxidation of the cell membrane &mdash; the marker measured clinically as TBARS or F2-isoprostanes</div>
+    </div>
+    <div class="ro">
+      <div class="ro-k">Mitochondrial pool damage</div>
+      <div class="ro-v" id="vMito">0%</div>
+      <div class="ro-bar"><div class="ro-fill" id="fMito" style="background:#7d8fa8"></div></div>
+      <div class="ro-sub">Mean damage across the mitochondria currently in the cell. mtDNA sits beside the source with little protective packaging, so it takes damage early &mdash; but the pool improves when biogenesis replaces damaged units</div>
+    </div>
+    <div class="ro">
+      <div class="ro-k">Protein oxidation</div>
+      <div class="ro-v" id="vProt">0%</div>
+      <div class="ro-bar"><div class="ro-fill" id="fProt" style="background:#b0a08d"></div></div>
+      <div class="ro-sub">Oxidized proteins misfold and lose function; clearing them consumes cellular energy</div>
+    </div>
+    <div class="ro">
+      <div class="ro-k">NAD+ pool</div>
+      <div class="ro-v" id="vNad">100%</div>
+      <div class="ro-bar"><div class="ro-fill" id="fNad" style="background:#614921;width:100%"></div></div>
+      <div class="ro-sub">PARP enzymes consume NAD+ repairing oxidative DNA damage. Sirtuins need what is left to drive biogenesis and activate mitochondrial SOD2</div>
+    </div>
+    <div class="ro">
+      <div class="ro-k">Inflammatory signaling</div>
+      <div class="ro-v" id="vInfl">0%</div>
+      <div class="ro-bar"><div class="ro-fill" id="fInfl" style="background:#c98a3e"></div></div>
+      <div class="ro-sub">NF-&kappa;B activation driven by reactive oxygen species and by fragments released from damaged mitochondria</div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h2>What this shows</h2>
+    <p><b>Mitochondria are both the source and the casualty.</b> Roughly 90% of cellular reactive oxygen species come from the electron transport chain. Mitochondrial DNA sits directly beside that source, lacks the histone packaging that protects nuclear DNA, and has limited repair machinery. It takes damage first and takes it hardest.</p>
+    <p><b>That is why the damage accelerates.</b> A mitochondrion with damaged DNA builds faulty electron transport components, which leak more electrons, which generate more reactive oxygen species, which damage more mitochondria. The curve steepens on its own. Watch the mitochondria darken in the panel above and the output rate climb with them &mdash; nothing about the load setting changed.</p>
+    <p><b>Damaged mitochondria also drive inflammation directly.</b> When they rupture, they release mitochondrial DNA and other fragments into the cytoplasm. The immune system evolved to recognize bacterial DNA, and mitochondrial DNA resembles it closely enough to trigger the same response. This is one route by which oxidative stress produces the chronic low-grade inflammation seen across cardiometabolic and neurodegenerative disease.</p>
+    <p><b>Antioxidant enzymes prevent damage; they do not undo it.</b> Activate Nrf2 and the enzymes clear new reactive oxygen species, so membrane and protein damage stop climbing. But the mitochondria already damaged stay damaged, and they keep leaking. Nrf2 defends. It does not rebuild.</p>
+    <p><b>Nrf1 does the rebuilding.</b> Nrf1 drives mitochondrial biogenesis &mdash; it switches on the nuclear genes mitochondria need, including TFAM, which is required to replicate mitochondrial DNA. Activate it in the panel and new mitochondria appear while mitophagy clears the worst of the old ones. The pool improves. This is why mitochondrial damage, unlike membrane damage, is not simply permanent: mitochondria turn over, and the cell can replace them.</p>
+    <p><b>NAD+ is not a third lever. It is the currency almost everything else spends.</b> Sirtuins are NAD+-dependent enzymes, and they run defense, clearance and repair alike. SIRT1 activates PGC-1&alpha;, which switches on Nrf1, so biogenesis runs at whatever rate the pool allows; SIRT1 also drives autophagy by deacetylating ATG proteins. SIRT3 activates SOD2, the superoxide dismutase inside mitochondria. And the repair side is direct rather than indirect: SIRT1, SIRT6 and SIRT7 regulate base excision repair, homologous recombination and non-homologous end joining. SIRT6 is recruited to damage sites and stimulates the base excision repair enzymes MYH and APE1. SIRT2 transcriptionally activates OGG1, the glycosylase that excises 8-oxoguanine &mdash; the signature lesion of oxidative DNA damage. Drain NAD+ and defense, clearance and repair all weaken together.</p>
+    <p><b>PARP and the sirtuins are rivals and collaborators at the same time.</b> Both draw on the same NAD+ pool, and under heavy DNA damage PARP1 wins that competition and drains it &mdash; which is the loop the panel above models. Yet SIRT6 also activates PARP1 directly, by mono-ADP-ribosylating it, to recruit repair factors to the break. The two are not simply opposed. What determines the outcome is whether there is enough NAD+ for both jobs at once, which is precisely what heavy oxidative load takes away.</p>
+    <p><b>Oxidative damage drains it.</b> PARP enzymes consume NAD+ to repair damaged DNA, and the heavier the damage, the more they consume. Watch the NAD+ readout fall as the other readouts climb. This is a third self-reinforcing loop layered on the first: damage depletes NAD+, depleted NAD+ weakens defense and repair, weaker defense means more damage. In the panel above, activating Nrf1 under heavy load with a drained pool leaves the mitochondrial pool near 80% damaged; restoring NAD+ first brings it to roughly 43%. Same activation, different result, because the machinery had something to run on.</p>
+    <p><b>None of the three actually repairs anything.</b> Nrf2 stops new damage. Nrf1 replaces mitochondria. NAD+ funds both. But oxidized proteins stay oxidized and peroxidized membrane lipids stay peroxidized, because nothing in that set removes them. The cell needs a fourth capability, and it is the one people mean when they say the body repairs itself.</p>
+    <p><b>The cell mostly does not repair damaged molecules. It destroys and replaces them.</b> The proteasome degrades oxidized proteins. Autophagy clears aggregates too large for the proteasome. Mitophagy removes mitochondria past saving. Membrane phospholipids turn over continuously. New proteins and lipids get built from dietary amino acids and fatty acids. DNA is the exception &mdash; base excision repair genuinely repairs it, and that is where PARP spends NAD+.</p>
+    <p><b>A naming trap worth knowing.</b> Two different proteins are abbreviated Nrf1 in the literature. The one on this site is NRF1, nuclear respiratory factor 1, which drives mitochondrial biogenesis. The other is NFE2L1, a sibling of Nrf2 in the CNC-bZIP family, and it is the master regulator of the proteasome recovery response and of aggrephagy through p62 and GABARAPL1. Same abbreviation, different protein, different job. If you search the literature for Nrf1 you will get both.</p>
+    <p><b>Repair costs ATP, and ATP comes from mitochondria.</b> Turn on Clearance &amp; rebuild in the panel and the rate depends on three things: how much NAD+ is left, how healthy the mitochondrial pool is, and how much reactive oxygen species is still in the cytoplasm. That last one dominates. Run clearance by itself under continuing oxidative load and almost nothing improves &mdash; in the panel, protein oxidation still climbs from roughly 22% to 62%, nearly identical to doing nothing. Add Nrf2 to clear the reactive oxygen species and the same clearance drives protein oxidation to zero and pulls membrane damage down with it. <b>You cannot out-repair ongoing damage.</b> Stop the fire, then rebuild.</p>
+    <p><b>Run each one alone and the difference is obvious.</b> With Nrf2 alone, membrane damage falls sharply but the mitochondrial pool stays poor. With Nrf1 alone, the mitochondrial pool recovers but the membrane keeps taking hits, because nothing is clearing the reactive oxygen species still flying through the cytoplasm. Run both and every readout lands lower than either produces on its own. They are not versions of the same intervention. One stops the damage, one replaces the mitochondria, one supplies the cofactor they run on, and one clears and rebuilds what was already broken. Worth noting for older patients: NAD+ levels decline with age, which means the resource the other two pathways draw on is smallest in exactly the patients carrying the most accumulated damage.</p>
+  </div>
+
+  <div class="footnote">
+    A teaching illustration, not a quantitative model. This illustration scales particle counts, damage rates and timescales for visibility; real reactive oxygen species have nanosecond to millisecond lifetimes and travel very short distances, and a real cell contains hundreds to thousands of mitochondria rather than the handful shown. The mechanisms represented &mdash; mitochondrial reactive oxygen species production, preferential mtDNA damage, the self-amplifying damage cycle, mtDNA as a driver of inflammatory signaling, and Nrf2-induced antioxidant enzyme defense &mdash; are drawn from the peer-reviewed literature cited elsewhere on this site.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var ROS='#96475a', MITO='#7d8fa8', NUC='#614921', ENZ='#415A4E', MEM='#b0a08d';
+
+  var cv = document.getElementById('cvs');
+  var ctx = cv.getContext ? cv.getContext('2d') : null;
+  var W = 980, H = 400;
+
+  function resize(){
+    if (!ctx) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var r = cv.getBoundingClientRect();
+    W = (r && r.width > 80) ? r.width : 980;
+    H = 400;
+    cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    layout();
+  }
+
+  var SEGS = 72;
+  var st = {
+    ros: [], mitos: [], enzymes: [], membrane: [],
+    dmgMem:0, dmgMito:0, dmgProt:0, inflam:0,
+    nrf2:false, nrf1:false, repair:false, nad:100, spawnAcc:0, bioAcc:0, phagAcc:0, cx:0, cy:0, rx:0, ry:0
+  };
+
+  function layout(){
+    st.cx = W/2; st.cy = H/2;
+    st.rx = Math.min(W*0.44, 420); st.ry = H*0.42;
+    // reposition mitochondria within the cell
+    for (var i=0;i<st.mitos.length;i++){
+      var m = st.mitos[i];
+      m.x = st.cx + Math.cos(m.ang)*st.rx*m.rr;
+      m.y = st.cy + Math.sin(m.ang)*st.ry*m.rr;
+    }
+  }
+
+  function seed(){
+    st.ros = []; st.enzymes = [];
+    st.dmgMem=0; st.dmgMito=0; st.dmgProt=0; st.inflam=0;
+    st.nrf2=false; st.nrf1=false; st.repair=false; st.nad=100; st.spawnAcc=0; st.bioAcc=0; st.phagAcc=0;
+    st.membrane = [];
+    for (var s=0;s<SEGS;s++) st.membrane.push(0);   // 0 = intact, 1 = fully peroxidized
+    st.mitos = [];
+    var n = 7;
+    for (var i=0;i<n;i++){
+      var ang = (i/n)*Math.PI*2 + 0.35;
+      var rr = 0.42 + (i%3)*0.16;
+      st.mitos.push({ang:ang, rr:rr, x:0, y:0, dmg:0, rot: ang*1.7, pulse:0});
+    }
+    layout();
+  }
+
+  function newMito(){
+    var ang = Math.random()*Math.PI*2;
+    var rr = 0.35 + Math.random()*0.45;
+    var m = {ang:ang, rr:rr, x:0, y:0, dmg:0, rot: Math.random()*Math.PI, pulse:0, born:1};
+    m.x = st.cx + Math.cos(ang)*st.rx*rr;
+    m.y = st.cy + Math.sin(ang)*st.ry*rr;
+    return m;
+  }
+
+  function addEnzymes(n){
+    for (var i=0;i<n;i++){
+      var a = Math.random()*Math.PI*2, r = Math.sqrt(Math.random())*0.85;
+      st.enzymes.push({
+        x: st.cx + Math.cos(a)*st.rx*r,
+        y: st.cy + Math.sin(a)*st.ry*r,
+        vx:(Math.random()-0.5)*30, vy:(Math.random()-0.5)*30, pulse:0
+      });
+    }
+  }
+
+  function inCell(x,y){
+    var dx=(x-st.cx)/st.rx, dy=(y-st.cy)/st.ry;
+    return dx*dx+dy*dy <= 1;
+  }
+
+  function step(dt, load){
+    var i, j, m, p;
+
+    // ---- ROS production: baseline load plus extra from damaged mitochondria ----
+    var leak = 0;
+    for (i=0;i<st.mitos.length;i++) leak += st.mitos[i].dmg;
+    var rate = load*2.6 + leak*5.2;          // the vicious cycle lives in this term
+    st.spawnAcc += dt*rate;
+    while (st.spawnAcc >= 1){
+      st.spawnAcc -= 1;
+      if (st.ros.length < 360 && st.mitos.length){
+        m = st.mitos[Math.floor(Math.random()*st.mitos.length)];
+        var a = Math.random()*Math.PI*2;
+        st.ros.push({
+          x: m.x + Math.cos(a)*26, y: m.y + Math.sin(a)*26,
+          vx: Math.cos(a)*44, vy: Math.sin(a)*44, life:1, grace:0.45
+        });
+      }
+    }
+
+    // ---- move ROS, apply damage ----
+    for (i=st.ros.length-1;i>=0;i--){
+      p = st.ros[i];
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      p.vx += (Math.random()-0.5)*14; p.vy += (Math.random()-0.5)*14;
+      var sp = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+      if (sp>58){ p.vx=p.vx/sp*58; p.vy=p.vy/sp*58; }
+      if (p.grace > 0) p.grace -= dt;
+
+      var hit = false;
+
+      // membrane
+      var ndx=(p.x-st.cx)/st.rx, ndy=(p.y-st.cy)/st.ry;
+      if (ndx*ndx+ndy*ndy >= 1){
+        var ang = Math.atan2(p.y-st.cy, p.x-st.cx);
+        var idx = Math.floor(((ang+Math.PI)/(Math.PI*2))*SEGS) % SEGS;
+        if (idx<0) idx += SEGS;
+        st.membrane[idx] = Math.min(1, st.membrane[idx] + 0.07);
+        st.dmgMem = Math.min(100, st.dmgMem + 0.20);
+        st.nad = Math.max(0, st.nad - 0.13);   // PARP consumes NAD+ during repair
+        st.ros.splice(i,1);
+        hit = true;
+      }
+
+      // mitochondria — only after the particle has cleared its source
+      if (!hit && p.grace <= 0){
+        for (j=0;j<st.mitos.length;j++){
+          m = st.mitos[j];
+          var mdx=p.x-m.x, mdy=p.y-m.y;
+          if (mdx*mdx+mdy*mdy < 750){
+            m.dmg = Math.min(1, m.dmg + 0.018);
+            m.pulse = 1;
+            st.nad = Math.max(0, st.nad - 0.18);   // mtDNA damage draws on PARP too
+            st.ros.splice(i,1);
+            hit = true;
+            break;
+          }
+        }
+      }
+
+      if (!hit){
+        p.life -= dt*0.10;
+        if (p.life <= 0) st.ros.splice(i,1);
+      }
+    }
+
+    // ambient protein oxidation scales with the standing ROS burden
+    st.dmgProt = Math.min(100, st.dmgProt + st.ros.length * dt * 0.010);
+
+    // ---- antioxidant enzymes clear ROS ----
+    if (st.enzymes.length){
+      for (i=0;i<st.enzymes.length;i++){
+        var e = st.enzymes[i];
+        e.x += e.vx*dt; e.y += e.vy*dt;
+        e.vx += (Math.random()-0.5)*12; e.vy += (Math.random()-0.5)*12;
+        var es = Math.sqrt(e.vx*e.vx+e.vy*e.vy);
+        if (es>46){ e.vx=e.vx/es*46; e.vy=e.vy/es*46; }
+        if (!inCell(e.x,e.y)){ e.vx*=-1; e.vy*=-1; e.x=Math.max(4,Math.min(W-4,e.x)); }
+        if (e.pulse>0) e.pulse -= dt*3;
+        for (j=st.ros.length-1;j>=0;j--){
+          var r2 = st.ros[j];
+          var ddx=r2.x-e.x, ddy=r2.y-e.y;
+          var reach = 2000 * (0.45 + (st.nad/100)*0.55);
+          if (ddx*ddx+ddy*ddy < reach){ st.ros.splice(j,1); e.pulse=1; }
+        }
+      }
+    }
+
+    // ---- Nrf1: biogenesis builds new mitochondria, mitophagy clears the worst ----
+    if (st.nrf1){
+      // Sirtuins are NAD+-dependent, so biogenesis runs at the rate the pool allows
+      var nadF = 0.15 + (st.nad/100)*0.85;
+      st.bioAcc += dt * nadF;
+      if (st.bioAcc > 1.5 && st.mitos.length < 13){
+        st.bioAcc = 0;
+        st.mitos.push(newMito());
+      }
+      st.phagAcc += dt * nadF;
+      if (st.phagAcc > 2.2){
+        st.phagAcc = 0;
+        var worst = -1, wd = 0.45;
+        for (i=0;i<st.mitos.length;i++){
+          if (st.mitos[i].dmg > wd){ wd = st.mitos[i].dmg; worst = i; }
+        }
+        if (worst >= 0 && st.mitos.length > 5) st.mitos.splice(worst,1);
+      }
+    }
+    for (i=0;i<st.mitos.length;i++){ if (st.mitos[i].born > 0) st.mitos[i].born -= dt*0.8; }
+
+    // ---- Clearance and rebuild: proteasome, autophagy, membrane turnover ----
+    // Rate depends on NAD+, on how healthy the mitochondrial pool is (this work
+    // costs ATP), and on how much reactive oxygen species is still flying around.
+    if (st.repair){
+      var healthy = 0;
+      for (i=0;i<st.mitos.length;i++) healthy += (1 - st.mitos[i].dmg);
+      var atpF  = 0.22 + (st.mitos.length ? healthy/st.mitos.length : 0)*0.78;
+      var nadR  = 0.20 + (st.nad/100)*0.80;
+      var fireF = Math.max(0.05, 1 - st.ros.length/130);
+      var rate  = atpF * nadR * fireF;
+      st.dmgProt = Math.max(0, st.dmgProt - dt*7.5*rate);
+      st.dmgMem  = Math.max(0, st.dmgMem  - dt*4.5*rate);
+      for (i=0;i<SEGS;i++){
+        st.membrane[i] = Math.max(0, st.membrane[i] - dt*0.075*rate);
+      }
+      st.nad = Math.max(0, st.nad - dt*1.6*rate);   // rebuilding spends NAD+ too
+      st.repairRate = rate;
+    } else {
+      st.repairRate = 0;
+    }
+
+    // ---- NAD+ regenerates slowly on its own ----
+    st.nad = Math.min(100, st.nad + dt*0.55);
+
+    // ---- mitochondrial pool damage = mean across the current pool ----
+    var tot = 0;
+    for (i=0;i<st.mitos.length;i++) tot += st.mitos[i].dmg;
+    st.dmgMito = st.mitos.length ? (tot/st.mitos.length)*100 : 0;
+
+    // ---- inflammatory signalling: ROS burden + mitochondrial damage ----
+    var target = Math.min(100, st.ros.length*0.22 + st.dmgMito*0.55);
+    st.inflam += (target - st.inflam) * dt * 0.55;
+    if (st.inflam < 0) st.inflam = 0;
+  }
+
+  function draw(){
+    if (!ctx) return;
+    var i, m;
+    ctx.clearRect(0,0,W,H);
+
+    // ---- membrane, drawn segment by segment so damage is visible ----
+    for (i=0;i<SEGS;i++){
+      var a0 = (i/SEGS)*Math.PI*2 - Math.PI;
+      var a1 = ((i+1)/SEGS)*Math.PI*2 - Math.PI;
+      var d = st.membrane[i];
+      ctx.beginPath();
+      ctx.ellipse(st.cx, st.cy, st.rx, st.ry, 0, a0, a1);
+      ctx.lineWidth = 6 - d*2;
+      ctx.strokeStyle = d > 0.03
+        ? 'rgb(' + Math.round(160-52*d) + ',' + Math.round(70-42*d) + ',' + Math.round(88-46*d) + ')'
+        : 'rgba(176,160,141,0.85)';
+      ctx.setLineDash(d > 0.55 ? [3, 5] : []);
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    // ---- cytoplasm tint ----
+    ctx.beginPath();
+    ctx.ellipse(st.cx, st.cy, st.rx-3, st.ry-3, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(220,229,221,0.28)';
+    ctx.fill();
+
+    // ---- nucleus ----
+    ctx.beginPath();
+    ctx.ellipse(st.cx, st.cy, st.rx*0.20, st.ry*0.26, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(97,73,33,0.16)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(97,73,33,0.55)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.fillStyle = 'rgba(97,73,33,0.72)';
+    ctx.font = '600 11px Lato, sans-serif'; ctx.textAlign='center';
+    ctx.fillText('nucleus', st.cx, st.cy+3);
+
+    // ---- mitochondria ----
+    for (i=0;i<st.mitos.length;i++){
+      m = st.mitos[i];
+      ctx.save();
+      ctx.translate(m.x, m.y); ctx.rotate(m.rot);
+      if (m.pulse>0){
+        ctx.beginPath(); ctx.ellipse(0,0,26+8*m.pulse,15+5*m.pulse,0,0,Math.PI*2);
+        ctx.fillStyle='rgba(168,90,107,'+(0.18*m.pulse)+')'; ctx.fill();
+        m.pulse -= 0.03;
+      }
+      // healthy slate -> damaged dark rose
+      var rr = Math.round(125 + (108-125)*m.dmg);
+      var gg = Math.round(143 + (28-143)*m.dmg);
+      var bb = Math.round(168 + (46-168)*m.dmg);
+      ctx.beginPath(); ctx.ellipse(0,0,23,13,0,0,Math.PI*2);
+      ctx.fillStyle = 'rgb('+rr+','+gg+','+bb+')';
+      ctx.fill();
+      if (m.born > 0){
+        ctx.beginPath(); ctx.ellipse(0,0,23+7*m.born,13+5*m.born,0,0,Math.PI*2);
+        ctx.strokeStyle = 'rgba(125,143,168,'+(0.75*m.born)+')';
+        ctx.lineWidth = 2; ctx.stroke();
+      }
+      if (m.dmg > 0.15){
+        ctx.strokeStyle = 'rgba(78,18,32,' + (0.35 + m.dmg*0.55) + ')';
+        ctx.lineWidth = 1.4 + m.dmg*1.6;
+        ctx.stroke();
+      }
+      // cristae
+      ctx.strokeStyle = 'rgba(255,255,255,'+(0.55 - m.dmg*0.35)+')';
+      ctx.lineWidth = 1.4;
+      for (var c=-2;c<=2;c++){
+        ctx.beginPath(); ctx.moveTo(c*7, -9); ctx.lineTo(c*7+3, 9); ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // ---- enzymes ----
+    for (i=0;i<st.enzymes.length;i++){
+      var e = st.enzymes[i];
+      ctx.beginPath(); ctx.arc(e.x,e.y,45,0,Math.PI*2);
+      ctx.fillStyle='rgba(117,156,138,0.16)'; ctx.fill();
+      ctx.strokeStyle='rgba(65,90,78,0.34)'; ctx.lineWidth=1; ctx.stroke();
+      if (e.pulse>0){
+        ctx.beginPath(); ctx.arc(e.x,e.y,45*(1+0.18*e.pulse),0,Math.PI*2);
+        ctx.fillStyle='rgba(117,156,138,'+(0.2*e.pulse)+')'; ctx.fill();
+      }
+      ctx.beginPath();
+      for (var k=0;k<6;k++){
+        var an = Math.PI/6 + k*Math.PI/3;
+        var px = e.x+Math.cos(an)*6.5, py = e.y+Math.sin(an)*6.5;
+        if(k) ctx.lineTo(px,py); else ctx.moveTo(px,py);
+      }
+      ctx.closePath(); ctx.fillStyle=ENZ; ctx.fill();
+    }
+
+    // ---- ROS ----
+    ctx.fillStyle = ROS;
+    for (i=0;i<st.ros.length;i++){
+      ctx.beginPath(); ctx.arc(st.ros[i].x, st.ros[i].y, 3.0, 0, Math.PI*2); ctx.fill();
+    }
+  }
+
+  var LOAD_TXT = {
+    0:'None — no reactive oxygen species generated',
+    1:'Minimal — resting metabolism, low exposure',
+    2:'Low — resting metabolism, low exposure',
+    3:'Low-moderate — light everyday exposure',
+    4:'Moderate — ordinary metabolic and environmental stress',
+    5:'Moderate — ordinary metabolic and environmental stress',
+    6:'Elevated — poor sleep, processed diet, sedentary',
+    7:'Elevated — poor sleep, processed diet, sedentary',
+    8:'High — smoking, heavy alcohol, chronic inflammation',
+    9:'High — smoking, heavy alcohol, chronic inflammation',
+    10:'Severe — acute illness or major exposure'
+  };
+
+  function el(id){ return document.getElementById(id); }
+  var loadEl = el('load');
+  var speed = 2;
+
+  function ui(){
+    el('vMem').textContent  = Math.round(st.dmgMem)+'%';
+    el('fMem').style.width  = st.dmgMem+'%';
+    el('vMito').textContent = Math.round(st.dmgMito)+'%';
+    el('fMito').style.width = st.dmgMito+'%';
+    el('vProt').textContent = Math.round(st.dmgProt)+'%';
+    el('fProt').style.width = st.dmgProt+'%';
+    el('vNad').textContent  = Math.round(st.nad)+'%';
+    el('fNad').style.width  = st.nad+'%';
+    el('vInfl').textContent = Math.round(st.inflam)+'%';
+    el('fInfl').style.width = st.inflam+'%';
+  }
+
+  var last = (window.performance && performance.now) ? performance.now() : Date.now();
+  function loop(now){
+    if (!now) now = Date.now();
+    var dt = (now-last)/1000; last = now;
+    if (dt > 0.05) dt = 0.05;
+    if (dt < 0) dt = 0;
+    var ld = +loadEl.value;
+    for (var k=0;k<speed;k++) step(dt, ld);
+    draw(); ui();
+    requestAnimationFrame(loop);
+  }
+
+  el('nrf2Btn').addEventListener('click', function(){
+    st.nrf2 = true;
+    if (st.enzymes.length < 60) addEnzymes(22);
+  });
+  el('nrf1Btn').addEventListener('click', function(){ st.nrf1 = true; });
+  el('nadBtn').addEventListener('click', function(){ st.nad = Math.min(100, st.nad + 45); });
+  el('repairBtn').addEventListener('click', function(){ st.repair = !st.repair;
+    this.style.opacity = st.repair ? '1' : '0.55';
+    this.textContent = st.repair ? 'Clearance & rebuild: ON' : 'Clearance & rebuild';
+  });
+  el('resetBtn').addEventListener('click', function(){ seed(); });
+  loadEl.addEventListener('input', function(){
+    el('loadRead').textContent = LOAD_TXT[loadEl.value] || '';
+  });
+  var spdBtns = document.querySelectorAll('.spd');
+  for (var sb=0; sb<spdBtns.length; sb++){
+    (function(btn){
+      btn.addEventListener('click', function(){
+        speed = +btn.getAttribute('data-spd');
+        for (var q=0;q<spdBtns.length;q++) spdBtns[q].classList.remove('active');
+        btn.classList.add('active');
+      });
+    })(spdBtns[sb]);
+  }
+
+  window.addEventListener('resize', resize);
+
+  resize(); seed();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

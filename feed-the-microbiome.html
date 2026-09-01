@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feed the Microbiome — Cellular Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#fff; --oxidative:#a85a6b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+    color:var(--charcoal);font-family:'Lato',sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:44px 22px 72px;}
+  .eyebrow{
+    font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.22em;
+    font-size:11.5px;color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  h1{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:clamp(26px,4.3vw,40px);line-height:1.08;letter-spacing:-.015em;
+    color:var(--ink);margin:0 0 14px;
+  }
+  .thesis{font-size:17px;line-height:1.62;max-width:700px;margin:0;}
+  .thesis b{color:var(--ink);}
+
+  .howto{
+    background:var(--light-sage);border-radius:16px 16px 0 0;padding:20px 24px;margin:28px 0 0;
+  }
+  .howto-h{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:10px;
+  }
+  .howto ol{margin:0;padding-left:20px;}
+  .howto li{font-size:14.5px;line-height:1.55;margin-bottom:7px;}
+  .howto li:last-child{margin-bottom:0;}
+  .ro-sub{font-size:11px;line-height:1.35;opacity:.62;margin-top:5px;font-style:italic;}
+  .stage{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:18px;
+    margin:30px 0 0;overflow:hidden;box-shadow:0 4px 18px rgba(28,37,57,.05);
+  }
+  .cv-holder{position:relative;background:#fdfcfa;}
+  canvas{display:block;width:100%;height:300px;}
+  .cv-note{
+    position:absolute;left:0;right:0;bottom:10px;text-align:center;
+    font-size:12.5px;opacity:.6;pointer-events:none;
+  }
+
+  .readouts{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    border-top:1px solid var(--pale-sage);
+  }
+  .ro{padding:16px 18px;border-right:1px solid var(--pale-sage);}
+  .ro:last-child{border-right:none;}
+  .ro-k{font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;opacity:.7;margin-bottom:6px;}
+  .ro-v{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:23px;
+    color:var(--ink);font-variant-numeric:tabular-nums;line-height:1;}
+  .ro-bar{height:7px;background:var(--light-sage);border-radius:999px;overflow:hidden;margin-top:8px;}
+  .ro-fill{height:100%;width:0%;transition:width .3s;}
+  .f-benef{background:var(--forest);}
+  .f-oppor{background:var(--oxidative);}
+  .f-scfa{background:var(--sage);}
+  .f-barrier{background:var(--brown);}
+
+  .controls{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:16px;
+    padding:20px 24px 22px;margin:0 0 18px;border-radius:0 0 16px 16px;border-top:none;box-shadow:0 4px 16px rgba(28,37,57,.04);
+  }
+  .ctrl-head{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:14px;
+  }
+  .food-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:11px;}
+  .food{
+    text-align:left;background:var(--bg-1);border:1.5px solid transparent;
+    border-radius:12px;padding:13px 15px;cursor:pointer;font-family:'Lato',sans-serif;
+    transition:border-color .15s,background .15s,transform .1s;
+  }
+  .food:hover{background:var(--light-sage);}
+  .food:active{transform:scale(.98);}
+  .food:focus-visible{outline:2.5px solid var(--forest);outline-offset:2px;}
+  .food-n{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:15px;
+    color:var(--ink);display:block;margin-bottom:3px;
+  }
+  .food-d{font-size:12.5px;line-height:1.4;opacity:.8;display:block;}
+  .food.prebiotic{border-color:var(--pale-sage);}
+  .food.probiotic{border-color:#cbd9d0;}
+  .food.refined{border-color:#e6d2d6;}
+
+  .btn-row{display:flex;gap:11px;margin-top:16px;flex-wrap:wrap;}
+  button.plain{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:.03em;border-radius:999px;padding:11px 22px;border:1.5px solid var(--pale-sage);
+    background:transparent;color:var(--forest);cursor:pointer;
+  }
+  button.plain:hover{background:var(--light-sage);}
+  button.plain:focus-visible{outline:2.5px solid var(--forest);outline-offset:2px;}
+
+  .verdict-wrap{margin:0 0 20px;}
+  .verdict-eyebrow{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.16em;color:var(--forest);
+    margin:0 0 7px 2px;opacity:.8;
+  }
+  .verdict{
+    margin:0;border-left:5px solid var(--pale-sage);background:var(--white);
+    border-radius:14px;padding:20px 24px;box-shadow:0 4px 16px rgba(28,37,57,.04);
+    min-height:96px;
+  }
+  .verdict h3{
+    font-family:'Roboto Condensed',sans-serif;font-size:17px;color:var(--ink);
+    margin:0 0 8px;font-weight:700;
+  }
+  .verdict p{margin:0;font-size:15px;line-height:1.6;}
+  .verdict.warn{border-left-color:var(--oxidative);}
+  .verdict.good{border-left-color:var(--forest);}
+
+  .takeaway{
+    margin-top:36px;background:var(--white);border-left:5px solid var(--forest);
+    border-radius:14px;padding:24px 28px;box-shadow:0 4px 16px rgba(28,37,57,.04);
+  }
+  .takeaway h2{font-family:'Roboto Condensed',sans-serif;font-size:20px;color:var(--ink);margin:0 0 12px;}
+  .takeaway p{font-size:15.5px;line-height:1.65;margin:0 0 12px;}
+  .takeaway p:last-child{margin-bottom:0;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:12.5px;opacity:.82;align-items:center;}
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .sw{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .footnote{margin-top:28px;padding-top:18px;border-top:1px solid var(--pale-sage);font-size:12.5px;line-height:1.6;opacity:.75;}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Cellular Health &middot; Microbiome</div>
+  <h1>Feed the Microbiome</h1>
+  <p class="thesis">A probiotic capsule delivers live bacteria &mdash; usually <b>Lactobacillus</b> and <b>Bifidobacterium</b> species. A prebiotic delivers the fermentable fiber those bacteria feed on: inulin, resistant starch, beta-glucan, galacto-oligosaccharides. "Feeding" here means exactly that &mdash; fiber that survives digestion in the small intestine, reaches the colon intact, and gets fermented by bacteria there, producing <b>short-chain fatty acids (SCFAs)</b>: acetate, propionate and butyrate. Colonocytes &mdash; the cells lining the colon &mdash; run on butyrate. It supplies roughly 70% of their energy. Starve them of butyrate and the gut barrier weakens.</p>
+  <p class="thesis" style="margin-top:12px">Give the probiotic without the fiber and the bacteria arrive with no fiber to consume. They pass through instead of establishing, and SCFA production never rises. Colonocytes lack butyrate, the gut barrier keeps weakening, and the sugar-fed bacteria you were trying to displace continue to multiply.</p>
+
+
+  <div class="howto">
+    <div class="howto-h">How to use this</div>
+    <ol>
+      <li><b>Start with "Probiotic capsule" alone.</b> Watch the new colonies appear, then fade over a few seconds. SCFA output stays at zero. This is a probiotic prescribed without attention to diet.</li>
+      <li><b>Now add "Diverse plant fiber."</b> SCFA output climbs, the established fiber-fermenting microflora multiply on their own, and the gut lining at the bottom of the panel seals up.</li>
+      <li><b>Click "Probiotic capsule" again.</b> Same probiotic, different result &mdash; this time the bacteria establish and stay, because there is now something for them to eat.</li>
+      <li><b>Try "Simulate typical US diet,"</b> then add a probiotic on top of it. Notice how little changes.</li>
+    </ol>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl-head">Add to the diet</div>
+    <div class="food-grid">
+      <button class="food probiotic" data-act="probiotic">
+        <span class="food-n">Probiotic capsule</span>
+        <span class="food-d">Live <i>Lactobacillus</i> and <i>Bifidobacterium</i> &mdash; bacteria only, no fiber</span>
+      </button>
+      <button class="food prebiotic" data-act="fiber">
+        <span class="food-n">Diverse plant fiber</span>
+        <span class="food-d">Inulin, resistant starch, beta-glucan &mdash; from legumes, oats, onions, chicory</span>
+      </button>
+      <button class="food prebiotic" data-act="ferment">
+        <span class="food-n">Fermented vegetables</span>
+        <span class="food-d">Refrigerated, unpasteurized sauerkraut or kimchi &mdash; live bacteria arriving in their own plant fiber</span>
+      </button>
+      <button class="food refined" data-act="refined">
+        <span class="food-n">Refined carbohydrate</span>
+        <span class="food-d">White flour, added sugar &mdash; the small intestine absorbs it first</span>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="plain" id="resetBtn">Reset to baseline</button>
+      <button class="plain" id="usBtn">Simulate typical US diet</button>
+    </div>
+  </div>
+
+
+  <div class="verdict-wrap">
+  <div class="verdict-eyebrow">What just happened</div>
+  <div class="verdict" id="verdict">
+    <h3>Baseline &mdash; nothing added yet</h3>
+    <p>An even split of fiber-fermenting and opportunistic colonies, with no fermentable fiber arriving. Add something and watch what happens.</p>
+  </div>
+
+
+  <div class="stage">
+    <div class="cv-holder">
+      <canvas id="cvs" width="960" height="300" aria-label="Simulation of beneficial and opportunistic gut bacteria responding to dietary inputs"></canvas>
+      <div class="cv-note">Colon lumen &mdash; each dot is a bacterial colony</div>
+    </div>
+    <div class="readouts">
+      <div class="ro">
+        <div class="ro-k">Fiber-fermenting bacteria</div>
+        <div class="ro-v" id="vBen">12</div>
+        <div class="ro-bar"><div class="ro-fill f-benef" id="fBen"></div></div>
+        <div class="ro-sub">Bifidobacterium, Faecalibacterium, Roseburia &mdash; colonies present</div>
+      </div>
+      <div class="ro">
+        <div class="ro-k">Opportunistic bacteria</div>
+        <div class="ro-v" id="vOpp">12</div>
+        <div class="ro-bar"><div class="ro-fill f-oppor" id="fOpp"></div></div>
+        <div class="ro-sub">Enterobacteriaceae (<i>E. coli</i>, <i>Klebsiella</i>), <i>Enterococcus</i>, <i>C. difficile</i> &mdash; colonies present</div>
+      </div>
+      <div class="ro">
+        <div class="ro-k">SCFA output</div>
+        <div class="ro-v" id="vScfa">0</div>
+        <div class="ro-bar"><div class="ro-fill f-scfa" id="fScfa"></div></div>
+        <div class="ro-sub">Short-chain fatty acids: acetate, propionate, butyrate (relative scale)</div>
+      </div>
+      <div class="ro">
+        <div class="ro-k">Barrier integrity</div>
+        <div class="ro-v" id="vBar">60</div>
+        <div class="ro-bar"><div class="ro-fill f-barrier" id="fBar"></div></div>
+        <div class="ro-sub">Tight-junction integrity of the gut lining (band at panel base)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h2>The clinical point</h2>
+    <p>Probiotics are among the most commonly recommended supplements in practice, and they are frequently recommended alone. With no fiber to consume, the probiotic bacteria have no advantage over the established microflora. Colonization is transient, and the SCFA signaling that makes the microbiome clinically relevant never begins.</p>
+    <p>That signaling is what matters at the cellular level. Fermentable fibers produce short-chain fatty acids (SCFAs) &mdash; acetate, propionate and butyrate. These activate two cell-surface receptors, GPR41 and GPR43 (G-protein-coupled receptors 41 and 43), found on intestinal cells, fat cells and immune cells. That receptor activation drives secretion of PYY (peptide YY, a satiety hormone) and GLP-1 (glucagon-like peptide-1, the same incretin hormone targeted by GLP-1 agonist medications). Butyrate is also the primary fuel for colonocytes &mdash; the cells lining the colon &mdash; and helps maintain the tight junctions that keep the gut barrier intact.</p>
+    <p>SCFAs also feed into the antioxidant pathways covered elsewhere on this site. Butyrate and propionate can activate Keap1-Nrf2 signaling (Nrf2 is the transcription factor that switches on the cell's own antioxidant enzymes; Keap1 is the protein that holds it inactive until stress releases it). Separately, bacteria convert dietary tryptophan into indole compounds that activate AhR (the aryl hydrocarbon receptor), which provides a second route to Nrf2 activation in the liver.</p>
+    <p><b>What "opportunistic" means here.</b> These are ordinary members of the established microflora in a healthy gut, present at low abundance: Enterobacteriaceae such as <i>Escherichia coli</i> and <i>Klebsiella</i>, along with <i>Enterococcus</i> species and <i>Clostridioides difficile</i>. They need no complex fiber. They grow fast on simple sugars, tolerate oxygen, and multiply whenever conditions favor them. Their outer membrane carries lipopolysaccharide (LPS), an endotoxin that triggers inflammation once it crosses a weakened barrier.</p>
+    <p><b>Refined carbohydrate starves the fiber-fermenting bacteria.</b> The small intestine absorbs sugar and white flour before they reach the colon, so little fermentable fiber arrives. Butyrate production falls, and a self-reinforcing loop begins: colonocytes normally burn butyrate through beta-oxidation, and that oxygen consumption keeps the colon anaerobic. With less butyrate, luminal oxygen rises &mdash; which suits oxygen-tolerant Proteobacteria like <i>E. coli</i> and further suppresses butyrate producers, which are oxygen-sensitive. Meanwhile, bacteria starved of dietary fiber consume the mucus layer instead, thinning the barrier separating them from the epithelium.</p>
+    <p><b>Fiber first, then the probiotic &mdash; or better, both together.</b> Fiber does two things a probiotic cannot: it feeds the bacteria you want and starves the ones you don't. Give a patient a probiotic without changing what they eat and you have dropped probiotic bacteria into a gut with no fiber to feed them &mdash; they pass through instead of colonizing &mdash; while the sugar-adapted population you were trying to displace keeps growing.</p>
+    <p><b>Fecal transplant is the ceiling case, and it makes the same point.</b> FMT transfers an entire donor community rather than a handful of strains, and for recurrent <i>Clostridioides difficile</i> infection it works &mdash; roughly 90% success in observational series, and it is now an approved therapy. But engraftment varies, and it fades. In one study of encapsulated FMT, 22% of patients showed declining donor engraftment within about a month, while others retained donor strains at one year and, in long-term follow-up, several years. Recipient diet is one reason: a randomized controlled trial in ulcerative colitis compared FMT with and without psyllium fiber supplementation and found that fiber promoted donor strain engraftment. A patient reporting that a transplant "only lasted a couple of months" is describing something the literature already documents.</p>
+    <p>Consider what that means. Even a complete community transfer &mdash; the largest possible dose of bacteria &mdash; engrafts better when fiber is there to sustain it. FMT is a regulated procedure with a narrow approved indication and its own risks, and nothing here suggests any supplement is comparable to it. The bottom line: bacteria persist when fed.</p>
+    <p>Probiotics have real, strain-specific indications, and this is not an argument against them. It is an argument about pairing them. Send the probiotic in with fiber to consume and its colonies establish and grow; send it in alone and the colonies die off. Worth distinguishing here: fermented foods are probiotic sources, not automatically prebiotic ones. Fermented vegetables like sauerkraut and kimchi carry both, since the bacteria arrive in the plant fiber they fermented. Kefir and yogurt deliver probiotic bacteria with almost no fiber, and still need a prebiotic.</p>
+    <p><b>Check that the cultures are alive.</b> Pasteurization after fermentation kills them. Shelf-stable canned or jarred sauerkraut has been heat-treated, so it delivers fiber but no live bacteria &mdash; a prebiotic without the probiotic. Many yogurts are heat-treated after culturing for shelf life; the label has to say live and active cultures. Vinegar-brined pickles were never fermented at all. The practical rule for vegetables: if it sits on a shelf at room temperature, the bacteria are dead. Buy it refrigerated.</p>
+    <div class="legend">
+      <span><i class="sw" style="background:#415A4E"></i> Fiber-fermenting colonies</span>
+      <span><i class="sw" style="background:#a85a6b"></i> Opportunistic colonies</span>
+      <span><i class="sw" style="background:#759C8A"></i> Short-chain fatty acids</span>
+    </div>
+  </div>
+
+  <div class="footnote">
+    A teaching illustration of a concept, not a quantitative model of gut ecology. Colony counts, growth rates, and timescales are scaled for visibility, and real microbial communities involve hundreds of taxa interacting in ways no two-population model captures. The mechanisms represented &mdash; SCFA production from fiber fermentation, SCFA effects on barrier integrity and gut-hormone signaling, and the fiber dependence of probiotic bacteria &mdash; are drawn from the peer-reviewed literature cited on the Microbiome, Metabolic Health, and Weight Regulation page. FMT engraftment figures are from studies of encapsulated fecal microbiota transplantation for recurrent <i>C. difficile</i> infection and from a randomized controlled trial of FMT with and without psyllium fiber in ulcerative colitis.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var BEN='#415A4E', OPP='#a85a6b', SCFA='#759C8A';
+
+  var cv = document.getElementById('cvs');
+  var ctx = cv.getContext ? cv.getContext('2d') : null;
+
+  var W = 960, H = 300;
+
+  function resize(){
+    if (!ctx) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var r = cv.getBoundingClientRect();
+    W = (r && r.width > 60) ? r.width : 960;
+    H = 300;
+    cv.width = Math.round(W*dpr);
+    cv.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  var state = {
+    ben: [], opp: [], scfa: [],
+    substrate: 0,      // fermentable fiber available
+    barrier: 60,       // 0-100
+    scfaLevel: 0       // 0-100
+  };
+
+  function mkColony(type){
+    return {
+      x: 20 + Math.random()*(W-40),
+      y: 20 + Math.random()*(H-40),
+      vx:(Math.random()-0.5)*12,
+      vy:(Math.random()-0.5)*12,
+      r: 4.5 + Math.random()*1.6,
+      type: type,
+      age: 0,
+      fade: 1
+    };
+  }
+
+  function seed(){
+    state.ben = []; state.opp = []; state.scfa = [];
+    var i;
+    for (i=0;i<12;i++) state.ben.push(mkColony('ben'));
+    for (i=0;i<12;i++) state.opp.push(mkColony('opp'));
+    state.substrate = 0; state.barrier = 60; state.scfaLevel = 0;
+  }
+
+  function addColonies(arr, n, type){
+    for (var i=0;i<n;i++){
+      if (arr.length < 150) arr.push(mkColony(type));
+    }
+  }
+
+  var verdictEl = document.getElementById('verdict');
+  function setVerdict(cls, title, body){
+    verdictEl.className = 'verdict' + (cls ? ' '+cls : '');
+    verdictEl.innerHTML = '<h3>'+title+'</h3><p>'+body+'</p>';
+  }
+
+  var ACTIONS = {
+    probiotic: function(){
+      addColonies(state.ben, 22, 'ben');
+      // no substrate added
+      if (state.substrate < 8){
+        setVerdict('warn','Probiotic alone — bacteria without fiber',
+          '<i>Lactobacillus</i> and <i>Bifidobacterium</i> colonies arrive, but there is no fermentable fiber for them to metabolize. Watch them fade over the next few seconds: with no fiber to consume they pass through rather than establishing, and SCFA output stays at zero. This is the most common way probiotics are prescribed.');
+      } else {
+        setVerdict('good','Probiotic with fiber present',
+          'The same probiotic, but now there is fermentable fiber present. The <i>Lactobacillus</i> and <i>Bifidobacterium</i> from the capsule have something to metabolize, so they establish and add to SCFA production. Probiotic plus prebiotic — this is the combination that works.');
+      }
+    },
+    fiber: function(){
+      state.substrate = Math.min(100, state.substrate + 38);
+      setVerdict('good','Diverse plant fiber — the fuel for fermentation',
+        'Fermentable fiber reaching the colon lets the established fiber-degrading microflora — <i>Bifidobacterium</i>, <i>Faecalibacterium</i>, <i>Roseburia</i> — grow and ferment. SCFA output rises, butyrate fuels the cells lining the colon, and barrier integrity improves. No probiotic required.');
+    },
+    ferment: function(){
+      addColonies(state.ben, 14, 'ben');
+      state.substrate = Math.min(100, state.substrate + 20);
+      setVerdict('good','Fermented vegetables — probiotics and prebiotics together',
+        'Fermented vegetables deliver probiotic bacteria still embedded in the plant fiber they were fermented in, so the probiotic and its prebiotic arrive together. Colonies establish rather than dying off, and SCFA production climbs. This applies to unpasteurized fermented vegetables specifically. Shelf-stable canned sauerkraut is pasteurized — the fiber survives, the bacteria do not. Kefir and yogurt with live cultures supply probiotic bacteria with almost no fiber.');
+    },
+    refined: function(){
+      addColonies(state.opp, 20, 'opp');
+      state.substrate = Math.max(0, state.substrate - 16);
+      setVerdict('warn','Refined carbohydrate — feeds the other side',
+        'The small intestine absorbs refined carbohydrate before it reaches the colon, so almost no fiber arrives. Sugar-adapted organisms — Enterobacteriaceae such as <i>E. coli</i> and <i>Klebsiella</i>, plus <i>Enterococcus</i> — grow rapidly on what is available. SCFA output falls and the barrier degrades.');
+    }
+  };
+
+  var buttons = document.querySelectorAll('.food');
+  for (var b=0;b<buttons.length;b++){
+    (function(btn){
+      btn.addEventListener('click', function(){
+        var a = btn.getAttribute('data-act');
+        if (ACTIONS[a]) ACTIONS[a]();
+      });
+    })(buttons[b]);
+  }
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    seed();
+    setVerdict('','Baseline &mdash; nothing added yet','An even split of fiber-fermenting and opportunistic bacteria, with no fermentable fiber arriving at the colon. Click a food above and this panel will explain what changed.');
+  });
+
+  document.getElementById('usBtn').addEventListener('click', function(){
+    seed();
+    ACTIONS.refined(); ACTIONS.refined(); ACTIONS.refined();
+    state.substrate = 4;
+    setVerdict('warn','A pattern resembling the typical US diet',
+      'Low fiber diversity with a high proportion of refined carbohydrate. Opportunistic populations grow, SCFA output stays low, and barrier integrity drifts down. Adding a probiotic on top of this pattern, without changing fiber intake, changes very little — try it.');
+  });
+
+  function step(dt){
+    var i, c;
+
+    // substrate is consumed by fiber-fermenting colonies
+    var demand = state.ben.length * dt * 0.13;
+    var consumed = Math.min(state.substrate, demand);
+    state.substrate -= consumed;
+
+    // SCFA produced in proportion to actual fermentation
+    var production = consumed * 105;
+    state.scfaLevel += production * dt * 8;
+    state.scfaLevel -= state.scfaLevel * dt * 0.30;      // clearance
+    if (state.scfaLevel < 0) state.scfaLevel = 0;
+    if (state.scfaLevel > 100) state.scfaLevel = 100;
+
+    // spawn visible SCFA particles when fermenting
+    if (consumed > 0.02 && state.scfa.length < 160){
+      var src = state.ben[Math.floor(Math.random()*state.ben.length)];
+      if (src){
+        state.scfa.push({x:src.x, y:src.y,
+          vx:(Math.random()-0.5)*26, vy:(Math.random()-0.5)*26, life:1});
+      }
+    }
+
+    // beneficial colonies: grow with substrate, fade without
+    for (i=state.ben.length-1;i>=0;i--){
+      c = state.ben[i];
+      c.age += dt;
+      if (state.substrate > 1){
+        c.fade = Math.min(1, c.fade + dt*0.5);
+      } else if (state.ben.length > 8){
+        // Probiotic colonies die off without fiber; the established
+        // population persists at low level rather than disappearing.
+        c.fade -= dt*0.16;
+        if (c.fade <= 0){ state.ben.splice(i,1); continue; }
+      } else {
+        c.fade = Math.min(0.68, c.fade + dt*0.3);   // established microflora hang on, dimmed
+      }
+    }
+    // growth when well fed
+    if (state.substrate > 25 && Math.random() < dt*2.2 && state.ben.length < 150){
+      state.ben.push(mkColony('ben'));
+    }
+
+    // opportunistic: suppressed by SCFA, otherwise slowly grow
+    for (i=state.opp.length-1;i>=0;i--){
+      c = state.opp[i];
+      if (state.scfaLevel > 45){
+        c.fade -= dt*0.13;
+        if (c.fade <= 0){ state.opp.splice(i,1); continue; }
+      } else {
+        c.fade = Math.min(1, c.fade + dt*0.4);
+      }
+    }
+    if (state.scfaLevel < 22 && Math.random() < dt*0.85 && state.opp.length < 150){
+      state.opp.push(mkColony('opp'));
+    }
+
+    // barrier integrity tracks SCFA (butyrate fuels colonocytes)
+    var target = 28 + state.scfaLevel*0.68;
+    state.barrier += (target - state.barrier) * dt * 0.55;
+
+    // movement
+    function move(p, damp){
+      p.x += p.vx*dt; p.y += p.vy*dt;
+      if (p.x<8){p.x=8;p.vx*=-1;} if (p.x>W-8){p.x=W-8;p.vx*=-1;}
+      if (p.y<8){p.y=8;p.vy*=-1;} if (p.y>H-8){p.y=H-8;p.vy*=-1;}
+      p.vx += (Math.random()-0.5)*damp; p.vy += (Math.random()-0.5)*damp;
+      var s = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+      if (s>34){ p.vx=p.vx/s*34; p.vy=p.vy/s*34; }
+    }
+    for (i=0;i<state.ben.length;i++) move(state.ben[i], 7);
+    for (i=0;i<state.opp.length;i++) move(state.opp[i], 7);
+    for (i=state.scfa.length-1;i>=0;i--){
+      var s2 = state.scfa[i];
+      s2.x += s2.vx*dt; s2.y += s2.vy*dt;
+      s2.life -= dt*0.55;
+      if (s2.life <= 0) state.scfa.splice(i,1);
+    }
+  }
+
+  function draw(){
+    if (!ctx) return;
+    ctx.clearRect(0,0,W,H);
+
+    // barrier band along the bottom = epithelial lining
+    var bh = 12;
+    var integ = Math.max(0, Math.min(100, state.barrier))/100;
+    ctx.fillStyle = 'rgba(97,73,33,'+(0.10 + 0.30*integ)+')';
+    ctx.fillRect(0, H-bh, W, bh);
+    // gaps when integrity is poor
+    if (integ < 0.75){
+      var gaps = Math.round((1-integ)*16);
+      ctx.fillStyle = '#fdfcfa';
+      for (var g=0; g<gaps; g++){
+        var gx = (g+0.5)*(W/gaps) + Math.sin(g*3.3)*10;
+        ctx.fillRect(gx-7, H-bh, 14, bh);
+      }
+    }
+
+    var i, c;
+    // SCFA particles
+    for (i=0;i<state.scfa.length;i++){
+      var s = state.scfa[i];
+      ctx.globalAlpha = Math.max(0, s.life)*0.75;
+      ctx.beginPath(); ctx.arc(s.x, s.y, 2.1, 0, Math.PI*2);
+      ctx.fillStyle = SCFA; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // colonies
+    for (i=0;i<state.opp.length;i++){
+      c = state.opp[i];
+      ctx.globalAlpha = Math.max(0, Math.min(1, c.fade));
+      ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+      ctx.fillStyle = OPP; ctx.fill();
+    }
+    for (i=0;i<state.ben.length;i++){
+      c = state.ben[i];
+      ctx.globalAlpha = Math.max(0, Math.min(1, c.fade));
+      ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+      ctx.fillStyle = BEN; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  var vBen=document.getElementById('vBen'), fBen=document.getElementById('fBen');
+  var vOpp=document.getElementById('vOpp'), fOpp=document.getElementById('fOpp');
+  var vScfa=document.getElementById('vScfa'), fScfa=document.getElementById('fScfa');
+  var vBar=document.getElementById('vBar'), fBar=document.getElementById('fBar');
+
+  function updateUI(){
+    var nb = state.ben.length, no = state.opp.length;
+    vBen.textContent = nb; vOpp.textContent = no;
+    var tot = Math.max(1, nb+no);
+    fBen.style.width = (nb/tot*100)+'%';
+    fOpp.style.width = (no/tot*100)+'%';
+    vScfa.textContent = Math.round(state.scfaLevel);
+    fScfa.style.width = state.scfaLevel+'%';
+    vBar.textContent = Math.round(state.barrier);
+    fBar.style.width = Math.max(0,Math.min(100,state.barrier))+'%';
+  }
+
+  var last = (window.performance && performance.now) ? performance.now() : Date.now();
+  function loop(now){
+    if (!now) now = Date.now();
+    var dt = (now-last)/1000; last = now;
+    if (dt > 0.05) dt = 0.05;
+    if (dt < 0) dt = 0;
+    step(dt); draw(); updateUI();
+    requestAnimationFrame(loop);
+  }
+
+  resize();
+  seed();
+  window.addEventListener('resize', function(){ resize(); });
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

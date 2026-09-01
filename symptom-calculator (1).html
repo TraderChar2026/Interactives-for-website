@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cellular Health Clinical Intake — Educational Screening Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#ffffff; --black:#000000; --amber:#c98a3e;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background: linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+    color: var(--charcoal);
+    font-family:'Lato', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:48px 24px 80px;}
+  .eyebrow{
+    font-family:'Roboto Condensed', sans-serif; text-transform:uppercase;
+    letter-spacing:.22em; font-size:12px; color: var(--forest); font-weight:700; margin-bottom:14px;
+  }
+  h1{
+    font-family:'Roboto Condensed', sans-serif; font-weight:700;
+    font-size: clamp(26px, 4.2vw, 40px); line-height:1.1; letter-spacing:-.01em;
+    color:var(--ink); margin:0 0 16px;
+  }
+  .lede{ font-size:16.5px; line-height:1.6; color: var(--charcoal); max-width:680px; margin:0 0 8px; }
+  .disclaimer-box{
+    background: var(--white); border:1.5px solid var(--amber); border-radius:14px;
+    padding:18px 20px; margin:22px 0 40px; font-size:14px; line-height:1.6; color: var(--charcoal);
+  }
+  .disclaimer-box strong{color:var(--ink);}
+  section{margin-bottom:44px;}
+  h2{
+    font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:22px;
+    color:var(--ink); margin:0 0 4px; letter-spacing:-.01em;
+  }
+  .section-sub{color:var(--charcoal); font-size:14px; margin:0 0 20px; max-width:640px; line-height:1.55; opacity:.85;}
+
+  .category-card{
+    background: var(--white); border:1px solid var(--pale-sage); border-radius:16px;
+    padding:26px 28px; margin-bottom:22px; box-shadow: 0 4px 16px rgba(28,37,57,.04);
+  }
+  .category-head{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .dot{width:12px; height:12px; border-radius:50%; flex-shrink:0;}
+  .dot-nrf2{background:var(--sage);} .dot-nrf1{background:var(--rose-deep);}
+  .dot-nad{background:var(--brown);} .dot-micro{background:var(--forest);}
+  .category-title{ font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; color:var(--ink); }
+  .category-note{ font-size:13px; color:var(--charcoal); opacity:.75; margin:0 0 18px 24px; line-height:1.5; }
+
+  .subgroup{ margin-bottom:18px; }
+  .subgroup:last-child{ margin-bottom:0; }
+  .subgroup-label{
+    font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:11.5px;
+    text-transform:uppercase; letter-spacing:.12em; color:var(--forest);
+    margin:0 0 10px 24px; display:flex; align-items:center; gap:8px;
+  }
+  .subgroup-label .tag{
+    font-family:'Lato',sans-serif; text-transform:none; letter-spacing:0; font-weight:400;
+    font-size:11.5px; color:var(--charcoal); opacity:.6; background:var(--light-sage);
+    padding:2px 8px; border-radius:999px;
+  }
+  .check-list{list-style:none; margin:0 0 0 24px; padding:0; display:grid; gap:8px;}
+  .check-item{
+    display:flex; align-items:flex-start; gap:11px; cursor:pointer;
+    padding:7px 9px; border-radius:9px; transition: background .15s ease;
+  }
+  .check-item:hover{background: var(--light-sage);}
+  .check-item input{ margin-top:3px; width:16px; height:16px; accent-color: var(--forest); flex-shrink:0; cursor:pointer; }
+  .check-item label{font-size:14.5px; line-height:1.5; color:var(--charcoal); cursor:pointer;}
+  .check-item.marker input{ accent-color: var(--brown); }
+
+  .btn-row{display:flex; gap:14px; margin:36px 0 8px; flex-wrap:wrap;}
+  button{
+    font-family:'Roboto Condensed', sans-serif; font-weight:700; letter-spacing:.03em; font-size:15px;
+    border-radius:999px; padding:14px 30px; border:none; cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  button:active{transform:scale(.97);}
+  .btn-primary{background: var(--forest); color:var(--white); box-shadow:0 6px 20px rgba(65,90,78,.28);}
+  .btn-primary:hover{box-shadow:0 8px 24px rgba(65,90,78,.36);}
+  .btn-ghost{background:transparent; color:var(--forest); border:1.5px solid var(--pale-sage);}
+  .btn-ghost:hover{background: var(--light-sage);}
+
+  .results{margin-top:56px;}
+  .result-card{
+    background:var(--white); border-radius:16px; padding:22px 26px; margin-bottom:16px;
+    border-left:6px solid var(--pale-sage); box-shadow: 0 4px 16px rgba(28,37,57,.04);
+  }
+  .result-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-bottom:10px; flex-wrap:wrap;}
+  .result-name{font-family:'Roboto Condensed', sans-serif; font-weight:700; font-size:18px; color:var(--ink);}
+  .result-count{font-size:12.5px; color:var(--charcoal); opacity:.75;}
+  .bar-track{background:var(--light-sage); border-radius:999px; height:10px; overflow:hidden; margin-bottom:10px; display:flex;}
+  .bar-seg{height:100%;}
+  .breakdown{ font-size:12px; color:var(--charcoal); opacity:.7; margin-bottom:12px; display:flex; gap:14px; flex-wrap:wrap; }
+  .breakdown span{ display:flex; align-items:center; gap:5px; }
+  .breakdown .sw{ width:9px; height:9px; border-radius:2px; display:inline-block; }
+  .result-note{font-size:14.5px; line-height:1.6; color:var(--charcoal);}
+  .result-link{
+    display:inline-block; margin-top:10px; font-size:13.5px; font-weight:700;
+    color:var(--forest); text-decoration:none; border-bottom:1.5px solid var(--sage);
+  }
+  .empty-state{ text-align:center; padding:40px 20px; color:var(--charcoal); opacity:.7; font-size:15px; }
+  .footer-note{
+    margin-top:56px; padding-top:24px; border-top:1px solid var(--pale-sage);
+    font-size:13px; color:var(--charcoal); opacity:.75; line-height:1.6;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Clinical Tools</div>
+  <h1>Cellular Health Clinical Intake</h1>
+  <p class="lede">A structured intake to help identify which cellular signaling pathways may be worth discussing with a patient — combining reported symptoms, clinical history and risk factors, and objective lab markers where available, rather than symptoms alone.</p>
+
+  <div class="disclaimer-box">
+    <strong>Educational use only — not a diagnostic tool.</strong> This intake does not diagnose, treat, cure, or prevent any disease, and is not a substitute for clinical judgment, laboratory testing, or a full patient history. Objective markers are optional — leave them unchecked if not yet tested. Statements have not been evaluated by the FDA.
+  </div>
+
+  <section>
+    <h2>Select any that apply to this patient</h2>
+    <p class="section-sub">Each pathway below has three tiers: reported symptoms, history and risk factors, and objective markers (if tested). A pattern across all three tiers carries more weight than symptoms alone.</p>
+
+    <!-- NRF2 -->
+    <div class="category-card">
+      <div class="category-head"><span class="dot dot-nrf2"></span><span class="category-title">Nrf2 / Oxidative Stress &amp; Antioxidant Defense</span></div>
+      <p class="category-note">Related to the body's endogenous antioxidant enzyme response and chronic low-grade inflammatory signaling.</p>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Presentation <span class="tag">reported symptoms</span></div>
+        <ul class="check-list" data-group="nrf2" data-tier="symptom">
+          <li class="check-item"><input type="checkbox" id="n2-s1"><label for="n2-s1">Poor recovery from illness, injury, or surgery relative to expected timeline</label></li>
+          <li class="check-item"><input type="checkbox" id="n2-s2"><label for="n2-s2">Premature signs of oxidative aging (skin, hair) out of proportion to chronological age</label></li>
+          <li class="check-item"><input type="checkbox" id="n2-s3"><label for="n2-s3">Recurrent or chronic low-grade inflammatory symptoms without a clear diagnosis</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">History &amp; Risk Factors</div>
+        <ul class="check-list" data-group="nrf2" data-tier="history">
+          <li class="check-item"><input type="checkbox" id="n2-h1"><label for="n2-h1">Significant occupational or environmental toxicant exposure (solvents, heavy metals, pesticides)</label></li>
+          <li class="check-item"><input type="checkbox" id="n2-h2"><label for="n2-h2">Current or past smoking history</label></li>
+          <li class="check-item"><input type="checkbox" id="n2-h3"><label for="n2-h3">Diagnosed autoimmune or chronic inflammatory condition</label></li>
+          <li class="check-item"><input type="checkbox" id="n2-h4"><label for="n2-h4">High cumulative psychological or physiological stress burden</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Objective Markers <span class="tag">if tested</span></div>
+        <ul class="check-list" data-group="nrf2" data-tier="marker">
+          <li class="check-item marker"><input type="checkbox" id="n2-m1"><label for="n2-m1">Elevated CRP or ESR without clear acute cause</label></li>
+          <li class="check-item marker"><input type="checkbox" id="n2-m2"><label for="n2-m2">Elevated homocysteine</label></li>
+          <li class="check-item marker"><input type="checkbox" id="n2-m3"><label for="n2-m3">Elevated F2-isoprostanes or low total antioxidant capacity, if tested</label></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NRF1 -->
+    <div class="category-card">
+      <div class="category-head"><span class="dot dot-nrf1"></span><span class="category-title">Nrf1 / Mitochondrial Biogenesis</span></div>
+      <p class="category-note">Related to mitochondrial energy production, exercise tolerance, and cellular quality control.</p>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Presentation <span class="tag">reported symptoms</span></div>
+        <ul class="check-list" data-group="nrf1" data-tier="symptom">
+          <li class="check-item"><input type="checkbox" id="n1-s1"><label for="n1-s1">Exercise intolerance disproportionate to cardiopulmonary findings</label></li>
+          <li class="check-item"><input type="checkbox" id="n1-s2"><label for="n1-s2">Post-exertional malaise — fatigue that worsens hours after exertion rather than improving</label></li>
+          <li class="check-item"><input type="checkbox" id="n1-s3"><label for="n1-s3">Unexplained muscle weakness or myalgia</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">History &amp; Risk Factors</div>
+        <ul class="check-list" data-group="nrf1" data-tier="history">
+          <li class="check-item"><input type="checkbox" id="n1-h1"><label for="n1-h1">Statin use with muscle symptoms, or statin discontinued due to myalgia</label></li>
+          <li class="check-item"><input type="checkbox" id="n1-h2"><label for="n1-h2">Family history of mitochondrial disease or unexplained multisystem disorders</label></li>
+          <li class="check-item"><input type="checkbox" id="n1-h3"><label for="n1-h3">Chronic use of medications known to affect mitochondrial function (e.g., certain antivirals, valproate)</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Objective Markers <span class="tag">if tested</span></div>
+        <ul class="check-list" data-group="nrf1" data-tier="marker">
+          <li class="check-item marker"><input type="checkbox" id="n1-m1"><label for="n1-m1">Elevated resting lactate</label></li>
+          <li class="check-item marker"><input type="checkbox" id="n1-m2"><label for="n1-m2">Elevated CK without clear alternate cause</label></li>
+          <li class="check-item marker"><input type="checkbox" id="n1-m3"><label for="n1-m3">Abnormal exercise stress test with early anaerobic threshold</label></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- NAD+ -->
+    <div class="category-card">
+      <div class="category-head"><span class="dot dot-nad"></span><span class="category-title">NAD+ / Metabolic Aging</span></div>
+      <p class="category-note">Related to age-related decline in cellular energy metabolism, DNA repair capacity, and circadian regulation.</p>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Presentation <span class="tag">reported symptoms</span></div>
+        <ul class="check-list" data-group="nad" data-tier="symptom">
+          <li class="check-item"><input type="checkbox" id="nd-s1"><label for="nd-s1">Declining exercise capacity or stamina not explained by deconditioning alone</label></li>
+          <li class="check-item"><input type="checkbox" id="nd-s2"><label for="nd-s2">Circadian disruption — difficulty maintaining consistent sleep-wake timing</label></li>
+          <li class="check-item"><input type="checkbox" id="nd-s3"><label for="nd-s3">Slow wound healing or frequent minor infections</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">History &amp; Risk Factors</div>
+        <ul class="check-list" data-group="nad" data-tier="history">
+          <li class="check-item"><input type="checkbox" id="nd-h1"><label for="nd-h1">Age over 50 with new-onset fatigue or metabolic changes</label></li>
+          <li class="check-item"><input type="checkbox" id="nd-h2"><label for="nd-h2">Regular or heavy alcohol intake</label></li>
+          <li class="check-item"><input type="checkbox" id="nd-h3"><label for="nd-h3">Shift work or chronic sleep restriction history</label></li>
+          <li class="check-item"><input type="checkbox" id="nd-h4"><label for="nd-h4">Diagnosed metabolic syndrome or prediabetes</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Objective Markers <span class="tag">if tested</span></div>
+        <ul class="check-list" data-group="nad" data-tier="marker">
+          <li class="check-item marker"><input type="checkbox" id="nd-m1"><label for="nd-m1">Elevated fasting glucose or HbA1c</label></li>
+          <li class="check-item marker"><input type="checkbox" id="nd-m2"><label for="nd-m2">Central adiposity (elevated waist circumference)</label></li>
+          <li class="check-item marker"><input type="checkbox" id="nd-m3"><label for="nd-m3">Dyslipidemia on lipid panel</label></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MICROBIOME -->
+    <div class="category-card">
+      <div class="category-head"><span class="dot dot-micro"></span><span class="category-title">Microbiome / Metabolic-Weight Regulation</span></div>
+      <p class="category-note">Related to gut microbial composition, short-chain fatty acid production, and gut-hormone signaling.</p>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Presentation <span class="tag">reported symptoms</span></div>
+        <ul class="check-list" data-group="micro" data-tier="symptom">
+          <li class="check-item"><input type="checkbox" id="mc-s1"><label for="mc-s1">Weight plateau despite appropriate caloric intake and activity level</label></li>
+          <li class="check-item"><input type="checkbox" id="mc-s2"><label for="mc-s2">Bloating, gas, or irregular bowel patterns</label></li>
+          <li class="check-item"><input type="checkbox" id="mc-s3"><label for="mc-s3">Food sensitivities without a clear allergic mechanism</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">History &amp; Risk Factors</div>
+        <ul class="check-list" data-group="micro" data-tier="history">
+          <li class="check-item"><input type="checkbox" id="mc-h1"><label for="mc-h1">Frequent or prolonged antibiotic use, past or recent</label></li>
+          <li class="check-item"><input type="checkbox" id="mc-h2"><label for="mc-h2">Diagnosed IBS, IBD, or other GI condition</label></li>
+          <li class="check-item"><input type="checkbox" id="mc-h3"><label for="mc-h3">Diet low in fiber diversity</label></li>
+          <li class="check-item"><input type="checkbox" id="mc-h4"><label for="mc-h4">History of significant GI infection or food poisoning</label></li>
+        </ul>
+      </div>
+
+      <div class="subgroup">
+        <div class="subgroup-label">Objective Markers <span class="tag">if tested</span></div>
+        <ul class="check-list" data-group="micro" data-tier="marker">
+          <li class="check-item marker"><input type="checkbox" id="mc-m1"><label for="mc-m1">Elevated fasting insulin or HOMA-IR</label></li>
+          <li class="check-item marker"><input type="checkbox" id="mc-m2"><label for="mc-m2">Low fecal SCFA levels, if tested</label></li>
+          <li class="check-item marker"><input type="checkbox" id="mc-m3"><label for="mc-m3">Elevated hs-CRP alongside GI symptoms</label></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="calculate()">See Pathway Signals</button>
+    <button class="btn-ghost" onclick="resetAll()">Reset</button>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <div class="footer-note">
+    This tool reflects patterns discussed in the peer-reviewed and mechanistic literature on oxidative stress, mitochondrial function, NAD+ metabolism, and gut-microbiome signaling covered on the Pathway Deep Dive pages of this site. Objective markers, where checked, carry more analytical weight in the summary below than reported symptoms alone — but none of this calculates a diagnosis, risk score, or treatment recommendation. Overlapping signals across categories are common and expected; most patients will show relevance across more than one pathway.
+  </div>
+
+</div>
+
+<script>
+const TIER_WEIGHT = { symptom: 1, history: 1, marker: 2 };
+const TIER_COLOR = { symptom: 'var(--sage)', history: 'var(--rose-deep)', marker: 'var(--brown)' };
+const TIER_LABEL = { symptom: 'Symptoms', history: 'History/Risk', marker: 'Objective Markers' };
+
+const groups = {
+  nrf2: {
+    label: "Nrf2 — Antioxidant Defense",
+    color: "var(--sage)",
+    link: "Nrf2 Signaling and Antioxidant Defense",
+    note: "This pattern of reported symptoms, history, and/or markers is commonly discussed in relation to oxidative stress and antioxidant enzyme activity. See the Nrf2 Signaling and Antioxidant Defense page for the underlying mechanism and evidence."
+  },
+  nrf1: {
+    label: "Nrf1 — Mitochondrial Biogenesis",
+    color: "var(--rose-deep)",
+    link: "Nrf1 and Mitochondrial Biogenesis",
+    note: "This pattern is commonly discussed in relation to mitochondrial function and energy production. See the Nrf1 and Mitochondrial Biogenesis page — note this pathway has the least mature human intervention evidence of the four."
+  },
+  nad: {
+    label: "NAD+ — Cellular Energy Metabolism",
+    color: "var(--brown)",
+    link: "NAD+ Metabolism and Cellular Energy",
+    note: "This pattern is commonly discussed in relation to age-related NAD+ decline and cellular repair capacity. See the NAD+ Metabolism and Cellular Energy page for the mechanism and current human trial evidence."
+  },
+  micro: {
+    label: "Microbiome — Metabolic & Weight Regulation",
+    color: "var(--forest)",
+    link: "Microbiome, Metabolic Health, and Weight Regulation",
+    note: "This pattern is commonly discussed in relation to gut-microbiome composition, short-chain fatty acid production, and gut-hormone signaling. See the Microbiome, Metabolic Health, and Weight Regulation page for the underlying mechanism and evidence."
+  }
+};
+
+function calculate(){
+  const resultsEl = document.getElementById('results');
+  resultsEl.innerHTML = '';
+
+  let anyChecked = false;
+  const scores = {};
+
+  for (const key in groups){
+    const tiers = { symptom: {checked:0,total:0}, history: {checked:0,total:0}, marker: {checked:0,total:0} };
+    document.querySelectorAll(`[data-group="${key}"]`).forEach(list => {
+      const tier = list.getAttribute('data-tier');
+      const boxes = list.querySelectorAll('input[type="checkbox"]');
+      boxes.forEach(b => {
+        tiers[tier].total++;
+        if (b.checked) tiers[tier].checked++;
+      });
+    });
+    const weightedScore = tiers.symptom.checked*TIER_WEIGHT.symptom + tiers.history.checked*TIER_WEIGHT.history + tiers.marker.checked*TIER_WEIGHT.marker;
+    const maxWeighted = tiers.symptom.total*TIER_WEIGHT.symptom + tiers.history.total*TIER_WEIGHT.history + tiers.marker.total*TIER_WEIGHT.marker;
+    const totalChecked = tiers.symptom.checked + tiers.history.checked + tiers.marker.checked;
+    scores[key] = { tiers, weightedScore, maxWeighted, totalChecked };
+    if (totalChecked > 0) anyChecked = true;
+  }
+
+  const heading = document.createElement('h2');
+  heading.textContent = 'Pathway Signal Summary';
+  heading.style.marginBottom = '4px';
+  resultsEl.appendChild(heading);
+
+  const sub = document.createElement('p');
+  sub.className = 'section-sub';
+  sub.textContent = 'Weighted by tier (objective markers count double) — not a score, ranking, or diagnosis.';
+  resultsEl.appendChild(sub);
+
+  if (!anyChecked){
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.textContent = 'Select at least one item above, then click "See Pathway Signals."';
+    resultsEl.appendChild(empty);
+    resultsEl.scrollIntoView({behavior:'smooth', block:'start'});
+    return;
+  }
+
+  const ordered = Object.keys(scores).sort((a,b) => scores[b].weightedScore - scores[a].weightedScore);
+
+  ordered.forEach(key => {
+    const g = groups[key];
+    const s = scores[key];
+    const pct = s.maxWeighted ? Math.round((s.weightedScore / s.maxWeighted) * 100) : 0;
+
+    const card = document.createElement('div');
+    card.className = 'result-card';
+    card.style.borderLeftColor = g.color;
+
+    let barSegs = '';
+    let breakdownItems = '';
+    ['symptom','history','marker'].forEach(tier => {
+      const t = s.tiers[tier];
+      if (t.total > 0){
+        const segPct = s.maxWeighted ? (t.checked*TIER_WEIGHT[tier] / s.maxWeighted) * 100 : 0;
+        barSegs += `<div class="bar-seg" style="width:${segPct}%; background:${TIER_COLOR[tier]};"></div>`;
+        breakdownItems += `<span><span class="sw" style="background:${TIER_COLOR[tier]};"></span>${TIER_LABEL[tier]}: ${t.checked}/${t.total}</span>`;
+      }
+    });
+
+    card.innerHTML = `
+      <div class="result-top">
+        <span class="result-name">${g.label}</span>
+        <span class="result-count">${s.totalChecked} item${s.totalChecked===1?'':'s'} selected</span>
+      </div>
+      <div class="bar-track">${barSegs}</div>
+      <div class="breakdown">${breakdownItems}</div>
+      <div class="result-note">${s.totalChecked > 0 ? g.note : "No items selected in this category for this patient."}</div>
+      ${s.totalChecked > 0 ? `<a class="result-link" href="#">→ ${g.link}</a>` : ''}
+    `;
+    resultsEl.appendChild(card);
+  });
+
+  resultsEl.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function resetAll(){
+  document.querySelectorAll('input[type="checkbox"]').forEach(i => i.checked = false);
+  document.getElementById('results').innerHTML = '';
+}
+</script>
+
+</body>
+</html>

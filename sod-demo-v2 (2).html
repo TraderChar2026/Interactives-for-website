@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitamin C vs. Superoxide Dismutase — Cellular Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#fff; --oxidative:#a85a6b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+    color:var(--charcoal);font-family:'Lato',sans-serif;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 22px 72px;}
+  .eyebrow{
+    font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;
+    letter-spacing:.22em;font-size:11.5px;color:var(--forest);font-weight:700;margin-bottom:12px;
+  }
+  h1{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:clamp(26px,4.3vw,40px);line-height:1.08;letter-spacing:-.015em;
+    color:var(--ink);margin:0 0 14px;
+  }
+  .thesis{font-size:17px;line-height:1.62;max-width:700px;margin:0;}
+  .thesis b{color:var(--ink);}
+
+  .controls{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:16px;
+    padding:20px 24px;margin:30px 0 22px;box-shadow:0 4px 16px rgba(28,37,57,.04);
+    display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap;
+  }
+  .ctrl-label{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);display:block;margin-bottom:8px;
+  }
+  .slider-group{flex:1 1 250px;min-width:220px;}
+  input[type=range]{width:100%;accent-color:var(--forest);cursor:pointer;}
+  .load-read{font-size:13px;opacity:.8;margin-top:5px;}
+  .btn-group{display:flex;gap:10px;flex-wrap:wrap;}
+  button{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;letter-spacing:.03em;
+    font-size:14px;border-radius:999px;padding:12px 22px;border:none;cursor:pointer;
+    transition:transform .12s,box-shadow .12s,background .15s;
+  }
+  button:active{transform:scale(.97);}
+  button:focus-visible{outline:2.5px solid var(--forest);outline-offset:2px;}
+  .btn-dose{background:var(--beige);color:var(--brown);}
+  .btn-dose:hover{background:#c9b8a6;}
+  .btn-activate{background:var(--forest);color:var(--white);box-shadow:0 5px 16px rgba(65,90,78,.26);}
+  .btn-activate:hover{box-shadow:0 7px 20px rgba(65,90,78,.34);}
+  .btn-reset{background:transparent;color:var(--forest);border:1.5px solid var(--pale-sage);}
+  .btn-reset:hover{background:var(--light-sage);}
+
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:780px){.panels{grid-template-columns:1fr;}}
+  .panel{
+    background:var(--white);border:1px solid var(--pale-sage);border-radius:16px;
+    overflow:hidden;box-shadow:0 4px 16px rgba(28,37,57,.04);display:flex;flex-direction:column;
+  }
+  .panel-head{padding:18px 20px 14px;border-bottom:1px solid var(--pale-sage);}
+  .panel-tag{
+    font-family:'Roboto Condensed',sans-serif;font-size:10.5px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.15em;margin-bottom:6px;
+  }
+  .tag-stoich{color:var(--brown);} .tag-cat{color:var(--forest);}
+  .panel-title{
+    font-family:'Roboto Condensed',sans-serif;font-size:19px;font-weight:700;
+    color:var(--ink);line-height:1.15;margin-bottom:5px;
+  }
+  .panel-sub{font-size:13.5px;line-height:1.5;opacity:.85;}
+  .cv-holder{position:relative;}
+  canvas{display:block;width:100%;height:272px;background:#fdfcfa;}
+  .cv-hint{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:0 28px;font-size:13.5px;color:var(--charcoal);
+    opacity:.62;pointer-events:none;line-height:1.5;
+  }
+  .cv-hint.gone{display:none;}
+
+  .stats{padding:16px 20px 18px;border-top:1px solid var(--pale-sage);}
+  .stat-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+  .stat-k{font-size:12.5px;opacity:.75;}
+  .stat-v{
+    font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:21px;
+    color:var(--ink);font-variant-numeric:tabular-nums;
+  }
+  .stat-v.small{font-size:15px;}
+  .depleted{color:var(--oxidative);}
+  .burden-track{height:11px;background:var(--light-sage);border-radius:999px;overflow:hidden;margin-top:2px;}
+  .burden-fill{height:100%;background:var(--oxidative);width:0%;transition:width .18s linear;}
+  .stat-k em{font-style:normal;opacity:.6;font-size:11px;}
+  .sod-count{color:var(--forest);}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;font-size:12.5px;opacity:.8;align-items:center;}
+  .legend span{display:flex;align-items:center;gap:6px;}
+  .swatch{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .swatch.hex{border-radius:3px;width:13px;height:13px;}
+
+  .takeaway{
+    margin-top:36px;background:var(--white);border-left:5px solid var(--forest);
+    border-radius:14px;padding:24px 28px;box-shadow:0 4px 16px rgba(28,37,57,.04);
+  }
+  .takeaway h2{font-family:'Roboto Condensed',sans-serif;font-size:20px;color:var(--ink);margin:0 0 12px;}
+  .takeaway p{font-size:15.5px;line-height:1.65;margin:0 0 12px;}
+  .takeaway p:last-child{margin-bottom:0;}
+  .numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0 16px;}
+  .num-card{background:var(--bg-1);border-radius:12px;padding:15px 17px;}
+  .num-v{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:22px;color:var(--forest);line-height:1.15;margin-bottom:4px;}
+  .num-k{font-size:12.5px;line-height:1.45;opacity:.85;}
+  .footnote{margin-top:30px;padding-top:18px;border-top:1px solid var(--pale-sage);font-size:12.5px;line-height:1.6;opacity:.75;}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Cellular Health &middot; Core Concept</div>
+  <h1>Vitamin C vs. Superoxide Dismutase</h1>
+  <p class="thesis">Both handle superoxide. They do it by completely different mechanisms. Vitamin C works <b>stoichiometrically</b> &mdash; one molecule neutralizes roughly one radical and is oxidized in the process. Superoxide dismutase works <b>catalytically</b> &mdash; one enzyme dismutates radical after radical, near the diffusion limit, without being consumed. Run both against the same superoxide load.</p>
+
+  <div class="controls">
+    <div class="slider-group">
+      <label class="ctrl-label" for="load">Superoxide production rate</label>
+      <input type="range" id="load" min="1" max="10" value="5" aria-describedby="loadRead">
+      <div class="load-read" id="loadRead">Moderate &mdash; ordinary metabolic and environmental stress</div>
+    </div>
+    <div class="btn-group">
+      <button class="btn-dose" id="doseBtn">Add 150 vitamin C molecules</button>
+      <button class="btn-activate" id="actBtn">Induce SOD (adds 16 enzymes)</button>
+      <button class="btn-reset" id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-tag tag-stoich">Stoichiometric &mdash; supplementation</div>
+        <div class="panel-title">Vitamin C (ascorbate)</div>
+        <div class="panel-sub">A sacrificial reductant. Each molecule donates an electron, neutralizes about one radical, and is spent.</div>
+      </div>
+      <div class="cv-holder">
+        <canvas id="cvsA" width="520" height="272" aria-label="Simulation of vitamin C molecules being consumed one-for-one by superoxide radicals"></canvas>
+        <div class="cv-hint" id="hintA">Add vitamin C to begin</div>
+      </div>
+      <div class="stats">
+        <div class="stat-row"><span class="stat-k"><b>Radicals present right now</b></span><span class="stat-v" id="bA">0</span></div>
+        <div class="burden-track"><div class="burden-fill" id="bbA"></div></div>
+        <div class="stat-row" style="margin-top:12px"><span class="stat-k">Neutralized (total)</span><span class="stat-v small" id="nA">0</span></div>
+        <div class="stat-row"><span class="stat-k">Vitamin C remaining</span><span class="stat-v small" id="rA">0</span></div>
+        <div class="stat-row"><span class="stat-k">Cumulative damage <em>(running total &mdash; never falls)</em></span><span class="stat-v small" id="dA">0</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-tag tag-cat">Catalytic &mdash; pathway activation</div>
+        <div class="panel-title">Superoxide dismutase (SOD)</div>
+        <div class="panel-sub">An enzyme the cell makes itself. Each one dismutates superoxide continuously and is regenerated with every cycle.</div>
+      </div>
+      <div class="cv-holder">
+        <canvas id="cvsB" width="520" height="272" aria-label="Simulation of superoxide dismutase clearing radicals continuously without being consumed"></canvas>
+        <div class="cv-hint" id="hintB">Induce SOD to begin</div>
+      </div>
+      <div class="stats">
+        <div class="stat-row"><span class="stat-k"><b>Radicals present right now</b></span><span class="stat-v" id="bB">0</span></div>
+        <div class="burden-track"><div class="burden-fill" id="bbB"></div></div>
+        <div class="stat-row" style="margin-top:12px"><span class="stat-k">Dismutated (total)</span><span class="stat-v small" id="nB">0</span></div>
+        <div class="stat-row"><span class="stat-k">SOD enzymes active</span><span class="stat-v small sod-count" id="rB">0</span></div>
+        <div class="stat-row"><span class="stat-k">Cumulative damage <em>(running total &mdash; never falls)</em></span><span class="stat-v small" id="dB">0</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i class="swatch" style="background:#a85a6b"></i> Superoxide radical</span>
+    <span><i class="swatch" style="background:#d4c5b6"></i> Vitamin C molecule</span>
+    <span><i class="swatch hex" style="background:#415A4E"></i> SOD enzyme, with its catalytic zone</span>
+  </div>
+
+  <div class="takeaway">
+    <h2>Why this matters clinically</h2>
+    <p>The gap isn't a matter of dose. It's a difference in kind. Vitamin C can only ever neutralize what it stoichiometrically matches, and then it is oxidized and needs regenerating. Superoxide dismutase is among the fastest enzymes ever characterized, operating close to the rate at which molecules can physically diffuse into contact with it &mdash; and it comes out of every cycle intact, ready for the next.</p>
+    <div class="numbers">
+      <div class="num-card">
+        <div class="num-v">~100 : 1</div>
+        <div class="num-k">Inside a cell, ascorbate molecules (~10<sup>9</sup>) outnumber SOD molecules (~10<sup>7</sup>) by roughly a hundred to one.</div>
+      </div>
+      <div class="num-card">
+        <div class="num-v">~10<sup>6</sup>/sec</div>
+        <div class="num-k">Turnover of a single SOD molecule. Ascorbate turns over once, then is oxidized.</div>
+      </div>
+      <div class="num-card">
+        <div class="num-v">~100 &micro;s</div>
+        <div class="num-k">Time for the cell's SOD to clear as many radicals as its entire ascorbate pool could handle in total.</div>
+      </div>
+    </div>
+    <p>This is the mechanistic case for interest in inducing the body's own antioxidant enzymes rather than supplying antioxidants directly, and it helps explain why large trials of direct antioxidant supplementation have so often returned null results. It is a statement about mechanism only. Whether a given intervention meaningfully induces these enzymes in humans, and whether that produces measurable clinical benefit, is a separate question &mdash; and one where the human trial evidence is mixed, including two randomized placebo-controlled trials that found no significant effect. The evidence pages address that directly.</p>
+  </div>
+
+  <div class="footnote">
+    A teaching illustration, not a quantitative model. Particle counts and rates are scaled for visibility; real SOD turnover is orders of magnitude faster than anything that could be rendered on screen. Turnover and rate-constant figures are order-of-magnitude values from the enzymology literature.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Defensive: never let an unsupported API kill the whole script.
+  var reduce = false;
+  try {
+    reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  } catch (e) { reduce = false; }
+
+  var RADICAL='#a85a6b', MOLECULE='#d4c5b6', ENZYME='#415A4E';
+  var CAT_R = 45;   // SOD catalytic zone
+  var STO_R = 9;    // vitamin C encounter radius
+
+  var LOAD_TEXT = {
+    1:'Minimal — resting metabolism, low exposure',
+    2:'Low — resting metabolism, low exposure',
+    3:'Low-moderate — light everyday exposure',
+    4:'Moderate — ordinary metabolic and environmental stress',
+    5:'Moderate — ordinary metabolic and environmental stress',
+    6:'Elevated — poor sleep, processed diet, sedentary',
+    7:'Elevated — poor sleep, processed diet, sedentary',
+    8:'High — smoking, heavy alcohol, chronic inflammation',
+    9:'High — smoking, heavy alcohol, chronic inflammation',
+    10:'Severe — acute illness or intense unaccustomed exertion'
+  };
+
+  function Panel(canvas, mode, hint){
+    this.cv = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.mode = mode;
+    this.hint = hint;
+    this.radicals = [];
+    this.agents = [];
+    this.neutralized = 0;
+    this.damage = 0;
+    this.spawnAcc = 0;
+    this.w = canvas.width;
+    this.h = canvas.height;
+    this.resize();
+  }
+
+  Panel.prototype.resize = function(){
+    if (!this.ctx) return;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var r = this.cv.getBoundingClientRect();
+    // Fall back to the attribute size if layout hasn't settled.
+    var w = (r && r.width > 40) ? r.width : 520;
+    var h = 272;
+    this.w = w; this.h = h;
+    this.cv.width = Math.round(w * dpr);
+    this.cv.height = Math.round(h * dpr);
+    this.ctx.setTransform(dpr,0,0,dpr,0,0);
+  };
+
+  Panel.prototype.reset = function(){
+    this.radicals = []; this.agents = [];
+    this.neutralized = 0; this.damage = 0; this.spawnAcc = 0;
+    if (this.hint) this.hint.classList.remove('gone');
+  };
+
+  Panel.prototype.addAgents = function(n){
+    var slow = (this.mode === 'catalytic') ? 20 : 26;
+    for (var i=0;i<n;i++){
+      this.agents.push({
+        x: Math.random()*this.w,
+        y: Math.random()*this.h,
+        vx:(Math.random()-0.5)*slow,
+        vy:(Math.random()-0.5)*slow,
+        pulse:0
+      });
+    }
+    if (this.hint) this.hint.classList.add('gone');
+  };
+
+  function bounce(p, w, h, dt){
+    p.x += p.vx*dt; p.y += p.vy*dt;
+    if (p.x<4){p.x=4;p.vx*=-1;} if (p.x>w-4){p.x=w-4;p.vx*=-1;}
+    if (p.y<4){p.y=4;p.vy*=-1;} if (p.y>h-4){p.y=h-4;p.vy*=-1;}
+    p.vx += (Math.random()-0.5)*10; p.vy += (Math.random()-0.5)*10;
+    var sp = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+    if (sp>62){ p.vx = p.vx/sp*62; p.vy = p.vy/sp*62; }
+  }
+
+  Panel.prototype.step = function(dt, load){
+    var i, j, a, r, dx, dy;
+
+    this.spawnAcc += dt * load * 5.2;
+    while (this.spawnAcc >= 1){
+      this.spawnAcc -= 1;
+      if (this.radicals.length < 420){
+        this.radicals.push({
+          x: Math.random()*this.w, y: Math.random()*this.h,
+          vx:(Math.random()-0.5)*46, vy:(Math.random()-0.5)*46
+        });
+      }
+    }
+
+    for (i=0;i<this.radicals.length;i++) bounce(this.radicals[i], this.w, this.h, dt);
+    for (i=0;i<this.agents.length;i++){
+      a = this.agents[i];
+      bounce(a, this.w, this.h, dt);
+      if (a.pulse > 0) a.pulse -= dt*3.2;
+    }
+
+    if (this.mode === 'catalytic'){
+      // Every radical entering the catalytic zone is dismutated.
+      // The enzyme is regenerated and continues.
+      for (i=0;i<this.agents.length;i++){
+        a = this.agents[i];
+        for (j=this.radicals.length-1;j>=0;j--){
+          r = this.radicals[j];
+          dx = r.x-a.x; dy = r.y-a.y;
+          if (dx*dx+dy*dy < CAT_R*CAT_R){
+            this.radicals.splice(j,1);
+            this.neutralized++;
+            a.pulse = 1;
+          }
+        }
+      }
+    } else {
+      // One molecule, one radical, then the molecule is gone.
+      for (i=this.agents.length-1;i>=0;i--){
+        a = this.agents[i];
+        for (j=this.radicals.length-1;j>=0;j--){
+          r = this.radicals[j];
+          dx = r.x-a.x; dy = r.y-a.y;
+          if (dx*dx+dy*dy < STO_R*STO_R){
+            this.radicals.splice(j,1);
+            this.agents.splice(i,1);
+            this.neutralized++;
+            break;
+          }
+        }
+      }
+    }
+
+    this.damage += this.radicals.length * dt * 0.55;
+  };
+
+  Panel.prototype.draw = function(){
+    var c = this.ctx;
+    if (!c) return;
+    var i, k, a, ang, px, py;
+    c.clearRect(0,0,this.w,this.h);
+
+    for (i=0;i<this.agents.length;i++){
+      a = this.agents[i];
+      if (this.mode === 'catalytic'){
+        c.beginPath();
+        c.arc(a.x, a.y, CAT_R, 0, Math.PI*2);
+        c.fillStyle = 'rgba(117,156,138,0.11)';
+        c.fill();
+        c.strokeStyle = 'rgba(65,90,78,0.30)';
+        c.lineWidth = 1;
+        c.stroke();
+        if (a.pulse > 0){
+          c.beginPath();
+          c.arc(a.x, a.y, CAT_R*(1+0.20*a.pulse), 0, Math.PI*2);
+          c.fillStyle = 'rgba(117,156,138,' + (0.22*a.pulse) + ')';
+          c.fill();
+        }
+        c.beginPath();
+        for (k=0;k<6;k++){
+          ang = Math.PI/6 + k*Math.PI/3;
+          px = a.x + Math.cos(ang)*9.5; py = a.y + Math.sin(ang)*9.5;
+          if (k) c.lineTo(px,py); else c.moveTo(px,py);
+        }
+        c.closePath();
+        c.fillStyle = ENZYME; c.fill();
+        c.strokeStyle = '#ffffff'; c.lineWidth = 1.6; c.stroke();
+      } else {
+        c.beginPath();
+        c.arc(a.x, a.y, 4.2, 0, Math.PI*2);
+        c.fillStyle = MOLECULE; c.fill();
+      }
+    }
+
+    c.fillStyle = RADICAL;
+    for (i=0;i<this.radicals.length;i++){
+      c.beginPath();
+      c.arc(this.radicals[i].x, this.radicals[i].y, 2.8, 0, Math.PI*2);
+      c.fill();
+    }
+  };
+
+  function el(id){ return document.getElementById(id); }
+
+  var A = new Panel(el('cvsA'), 'stoich',    el('hintA'));
+  var B = new Panel(el('cvsB'), 'catalytic', el('hintB'));
+
+  var loadEl = el('load'), loadRead = el('loadRead');
+  var nA=el('nA'), rA=el('rA'), dA=el('dA'), bA=el('bA'), bbA=el('bbA');
+  var nB=el('nB'), rB=el('rB'), dB=el('dB'), bB=el('bB'), bbB=el('bbB');
+
+  function fmt(n){ return Math.round(n).toLocaleString(); }
+
+  var MAXR = 420;
+  function updateStats(){
+    // The live burden is the number that actually responds to SOD.
+    bA.textContent = A.radicals.length;
+    bB.textContent = B.radicals.length;
+    bA.className = 'stat-v' + (A.radicals.length > MAXR*0.6 ? ' depleted' : '');
+    bB.className = 'stat-v' + (B.radicals.length > MAXR*0.6 ? ' depleted' : '');
+    bbA.style.width = Math.min(100, A.radicals.length/MAXR*100) + '%';
+    bbB.style.width = Math.min(100, B.radicals.length/MAXR*100) + '%';
+
+    nA.textContent = fmt(A.neutralized);
+    nB.textContent = fmt(B.neutralized);
+    rA.textContent = A.agents.length;
+    rA.className = 'stat-v small' + ((A.agents.length===0 && A.neutralized>0) ? ' depleted' : '');
+    rB.textContent = B.agents.length;
+    rB.className = 'stat-v small sod-count';
+    dA.textContent = fmt(A.damage);
+    dB.textContent = fmt(B.damage);
+  }
+
+  var last = (window.performance && performance.now) ? performance.now() : Date.now();
+  function loop(now){
+    if (!now) now = Date.now();
+    var dt = (now - last)/1000; last = now;
+    if (dt > 0.05) dt = 0.05;
+    if (dt < 0) dt = 0;
+    if (reduce) dt *= 0.5;
+    var load = +loadEl.value;
+    A.step(dt, load); B.step(dt, load);
+    A.draw(); B.draw();
+    updateStats();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  el('doseBtn').addEventListener('click', function(){ A.addAgents(150); });
+  el('actBtn').addEventListener('click', function(){ if (B.agents.length < 32) B.addAgents(16); });
+  el('resetBtn').addEventListener('click', function(){ A.reset(); B.reset(); });
+
+  loadEl.addEventListener('input', function(){
+    loadRead.textContent = LOAD_TEXT[loadEl.value] || '';
+  });
+
+  window.addEventListener('resize', function(){ A.resize(); B.resize(); });
+})();
+</script>
+</body>
+</html>
