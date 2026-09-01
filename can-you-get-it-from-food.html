@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can You Get It From Food? — Cellular Health</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;900&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#faf6f2; --bg-2:#f9f5f0; --bg-3:#F9F9F9;
+    --ink:#1C2539; --charcoal:#434440;
+    --sage:#759C8A; --forest:#415A4E;
+    --rose:#BD959F; --rose-deep:#b98a9c;
+    --pale-sage:#dce5dd; --light-sage:#e8f0e8;
+    --beige:#d4c5b6; --brown:#614921;
+    --white:#fff; --oxidative:#a85a6b; --slate:#7d8fa8; --amber:#c98a3e;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 55%,var(--bg-3) 100%);
+    color:var(--charcoal);font-family:'Lato',sans-serif;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:44px 22px 72px;}
+  .eyebrow{font-family:'Roboto Condensed',sans-serif;text-transform:uppercase;letter-spacing:.22em;
+    font-size:11.5px;color:var(--forest);font-weight:700;margin-bottom:12px;}
+  h1{font-family:'Roboto Condensed',sans-serif;font-weight:700;
+    font-size:clamp(26px,4.3vw,40px);line-height:1.08;letter-spacing:-.015em;color:var(--ink);margin:0 0 14px;}
+  .thesis{font-size:17px;line-height:1.62;max-width:730px;margin:0;}
+  .thesis b{color:var(--ink);}
+
+  .howto{background:var(--light-sage);border-radius:16px;padding:18px 24px;margin:28px 0 20px;}
+  .howto-h{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:8px;}
+  .howto p{margin:0;font-size:14.5px;line-height:1.55;}
+
+  .grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:20px;align-items:start;}
+  @media(max-width:900px){.grid{grid-template-columns:1fr;}}
+  .card{background:var(--white);border:1px solid var(--pale-sage);border-radius:16px;
+    padding:22px 24px;box-shadow:0 4px 16px rgba(28,37,57,.04);}
+  .card-h{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:11px;
+    text-transform:uppercase;letter-spacing:.14em;color:var(--forest);margin-bottom:14px;}
+  .fgroup{margin-bottom:18px;}
+  .fgroup:last-child{margin-bottom:0;}
+  .fgroup-h{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12.5px;
+    color:var(--ink);margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--pale-sage);}
+  .frow{display:flex;align-items:center;gap:10px;padding:6px 7px;border-radius:9px;}
+  .frow:hover{background:var(--light-sage);}
+  .fname{flex:1;font-size:14px;line-height:1.35;}
+  .fserv{font-size:11.5px;opacity:.62;display:block;}
+  .fnut{font-size:11px;display:block;margin-top:2px;color:var(--forest);opacity:.9;font-weight:700;
+    font-family:'Roboto Condensed',sans-serif;letter-spacing:.01em;}
+  .fflag{font-size:10.5px;display:block;margin-top:2px;color:#8a6220;font-style:italic;}
+  .stepper{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+  .stepper button{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--pale-sage);
+    background:transparent;color:var(--forest);font-weight:700;cursor:pointer;font-size:15px;line-height:1;padding:0;}
+  .stepper button:hover{background:var(--light-sage);}
+  .stepper span{font-family:'Roboto Condensed',sans-serif;font-weight:700;min-width:17px;text-align:center;font-size:14px;}
+  .stepper span.on{color:var(--forest);}
+
+  .plate-row{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--pale-sage);}
+  .plate-row:last-child{border-bottom:none;}
+  .plate-q{font-family:'Roboto Condensed',sans-serif;font-weight:700;color:var(--forest);
+    min-width:26px;font-size:13.5px;flex-shrink:0;}
+  .plate-n{flex:1;font-size:13.5px;line-height:1.4;}
+  .plate-nut{display:block;font-size:11.5px;color:var(--forest);font-weight:700;
+    font-family:'Roboto Condensed',sans-serif;opacity:.9;}
+  .plate-empty{font-size:13.5px;opacity:.6;padding:8px 0;}
+  .cmp{margin-bottom:15px;}
+  .cmp-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:4px;}
+  .cmp-n{font-weight:700;color:var(--ink);font-size:14px;}
+  .cmp-d{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:12.5px;flex-shrink:0;}
+  .cmp-bar{height:9px;background:var(--light-sage);border-radius:999px;overflow:hidden;position:relative;}
+  .cmp-fill{height:100%;width:0%;transition:width .3s;}
+  .cmp-mark{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--ink);opacity:.55;left:100%;}
+  .cmp-why{font-size:12.5px;line-height:1.5;margin-top:6px;color:var(--charcoal);}
+  .cmp-sub{font-size:11.5px;line-height:1.45;opacity:.62;margin-top:4px;font-style:italic;}
+  .verdict-tag{display:inline-block;font-family:'Roboto Condensed',sans-serif;font-size:9.5px;
+    text-transform:uppercase;letter-spacing:.08em;padding:1.5px 7px;border-radius:6px;font-weight:700;margin-left:6px;vertical-align:1px;}
+  .t-yes{background:var(--light-sage);color:var(--forest);}
+  .t-part{background:#f6ecdc;color:#8a6220;}
+  .t-no{background:#f2e3e6;color:#8f4356;}
+
+  .btn-row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  button.plain{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:13.5px;
+    border-radius:999px;padding:10px 20px;border:1.5px solid var(--pale-sage);
+    background:transparent;color:var(--forest);cursor:pointer;}
+  button.plain:hover{background:var(--light-sage);}
+
+  .summary{background:var(--light-sage);border-radius:12px;padding:15px 17px;margin-top:16px;font-size:14px;line-height:1.55;}
+  .summary b{color:var(--ink);}
+
+  .takeaway{margin-top:34px;background:var(--white);border-left:5px solid var(--forest);
+    border-radius:14px;padding:24px 28px;box-shadow:0 4px 16px rgba(28,37,57,.04);}
+  .takeaway h2{font-family:'Roboto Condensed',sans-serif;font-size:20px;color:var(--ink);margin:0 0 12px;}
+  .takeaway p{font-size:15.5px;line-height:1.65;margin:0 0 12px;}
+  .takeaway p:last-child{margin-bottom:0;}
+  .footnote{margin-top:28px;padding-top:18px;border-top:1px solid var(--pale-sage);font-size:12.5px;line-height:1.6;opacity:.75;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Cellular Health &middot; Functional Nutrition</div>
+  <h1>Can You Get It From Food?</h1>
+  <p class="thesis">Functional foods are whole, fortified, enriched or enhanced foods with a beneficial effect beyond basic nutrition. The Academy of Nutrition and Dietetics definition adds a condition that usually gets dropped in conversation: the benefit has to arrive <b>at effective levels, based on significant standards of evidence.</b></p>
+  <p class="thesis" style="margin-top:12px">For some nutrients, an ordinary serving reaches the dose used in human trials. One serving of salmon meets the omega-3 target. A cup of lentils, a bowl of oats and a cup of berries clear the fiber target. A spoonful of tomato paste passes the lycopene dose. For other nutrients, no realistic quantity of food comes close, and telling a patient to "get it from food" quietly recommends something they cannot do. <b>The difference is concentration: how much of the nutrient a serving actually holds.</b> Build a day of eating below; the black line on each bar marks the dose the trials used.</p>
+
+  <div class="howto">
+    <div class="howto-h">How to use this</div>
+    <p>Add servings on the left; each food shows the functional nutrient it supplies and the pathway that nutrient acts on. The right panel reads your plate back and compares what it delivers against the doses used in human research. Some nutrients reach it easily. Some cannot get close no matter how much you eat, and knowing which is which changes what you tell a patient.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-h">Build a day of eating</div>
+      <div id="foods"></div>
+      <div class="btn-row">
+        <button class="plain" id="resetBtn">Clear</button>
+        <button class="plain" id="usBtn">Typical US day</button>
+        <button class="plain" id="bestBtn">Best-case whole-food day</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h">What you selected</div>
+      <div id="plate"></div>
+      <div class="card-h" style="margin-top:22px">Nutrient dose delivered vs. dose used in trials</div>
+      <div id="compounds"></div>
+      <div class="summary" id="summary"></div>
+    </div>
+  </div>
+
+  <div class="takeaway">
+    <h2>What this changes in practice</h2>
+    <p><b>Four nutrients reach trial-level intake from food. One gets close. Two cannot.</b> A well-built whole-food day hits the research doses for fiber, sulforaphane, lycopene and EPA+DHA &mdash; the omega-3 target from a single serving of salmon, the sulforaphane only from sprouts rather than mature broccoli. Green tea reaches roughly half the EGCG dose at three cups. Curcumin lands near 12% and resveratrol under 1%, and no realistic quantity of turmeric or red wine closes those gaps. This is a question of how concentrated the nutrient is in the food, not of eating more of it.</p>
+    <p><b>Sulforaphane is the clearest case.</b> Broccoli sprouts carry 20 to 100 times the glucoraphanin of mature broccoli. Trials typically use around 100&nbsp;g of fresh sprouts daily. Matching that with mature broccoli takes kilograms. So "eat cruciferous vegetables" and "reach the sulforaphane dose used in research" are two different recommendations, and only one of them is achievable at dinner.</p>
+    <p><b>Curcumin and resveratrol are worse still.</b> Trials use 1,000&ndash;2,000&nbsp;mg of curcuminoids; culinary turmeric is roughly 3% curcuminoids, so the trial dose is tens of grams of spice per day &mdash; before accounting for curcumin's poor absorption, which keeps systemic concentrations in the low micromolar range even at oral doses up to 12&nbsp;g. Resveratrol comes mainly from grape skins, and so appears in red grapes, red wine, peanuts and some berries. None of them carry much of it. A cup of red grapes delivers roughly 1.5&nbsp;mg and a glass of red wine about 1&nbsp;mg, against trial doses of 150&ndash;500&nbsp;mg. The review literature states the conclusion plainly: food cannot deliver high dietary intakes of resveratrol. Reaching a studied dose from grapes alone would take something on the order of a hundred cups a day.</p>
+    <p><b>The clinical translation is specific, not general.</b> For fiber, tell the patient to eat &mdash; 30 to 50 g a day from legumes, oats, vegetables and berries clears the intakes used in research, and the variety matters as much as the total, which is the part a single isolated fiber will not reproduce. Cooked tomato products reach lycopene trial doses easily. Two servings of oily fish a week approaches the omega-3 range without a capsule. For sulforaphane, sprouts work and broccoli does not. For curcumin and resveratrol, food is a rounding error against the studied doses &mdash; so either use a characterised preparation or leave those two out of the conversation rather than implying a dietary route exists.</p>
+    <p><b>Several countries regulate functional foods directly.</b> Japanese researchers defined functional foods in the early 1980s through three functions &mdash; nutrition, sensory quality, and physiological effect. Japan's Ministry of Health, Labour and Welfare established Foods for Specified Health Uses (FOSHU) as a regulatory category in 1991, with each product's effectiveness and safety scientifically evaluated before approval; Foods with Nutrient Function Claims followed in 2001 and Foods with Function Claims in 2015. Most FOSHU claims map closely onto what the United States calls structure/function claims.</p>
+    <p><b>The United States handles the same territory differently, which is worth knowing before reading a label.</b> The FDA has no separate "functional food" category. It regulates products as conventional foods, dietary supplements, food additives, or medical foods &mdash; the last being a defined category reserved for dietary management of a disease under physician supervision. Health claims on US foods run through authorised claims, qualified health claims, or structure/function claims instead. So the term carries real professional meaning and real regulatory meaning in other jurisdictions, but in the US it is a descriptive term rather than an approval status, and seeing it on a package tells you nothing about whether anyone evaluated that product.</p>
+    <p><b>Oats deserve a specific caveat.</b> Oats ripen unevenly, so growers apply glyphosate as a pre-harvest desiccant more heavily on oats than on most cereals, and residues concentrate in the husk and bran that rolling and milling do not remove. Environmental Working Group testing in 2018 detected glyphosate in 43 of 45 conventional oat products, with roughly three-quarters above 160 parts per billion; one major North American miller subsequently stopped buying glyphosate-desiccated oats. Organic oats test far lower, with around two-thirds of products showing no detectable residue. Regulators take a different view of the same numbers &mdash; over 99% of EU samples fall below the maximum residue limit, and the EPA holds that trace amounts are not of consumer concern. Both statements are true. The residue difference is real and measurable; whether chronic low-level exposure matters clinically is not settled.</p>
+    <p><b>On organic more broadly, be precise about which claim you are making.</b> That organic produce carries lower synthetic pesticide residues is well established and not seriously disputed. That organic food is more <i>nutritious</i> is a weaker claim: meta-analyses disagree, with some reporting higher polyphenol content in organic crops and others finding little consistent nutrient difference. And evidence that eating organic produces better health outcomes comes largely from observational cohorts, where people choosing organic differ in income, education, smoking, and overall diet quality in ways that are difficult to adjust away. So "lower residue exposure" is defensible and specific. "Healthier" is a broader claim than the evidence carries, and a physician will know the difference.</p>
+    <p><b>How you prepare food changes what it delivers.</b> Cooking destroys enzymes. Any nutrient that needs a plant enzyme to become active stops converting the moment you apply heat. Broccoli is the clearest case: heat destroys myrosinase, the enzyme that turns glucoraphanin into sulforaphane, so cooked broccoli hands that job to gut bacteria instead &mdash; and individuals vary several-fold in how well their bacteria manage it. Chopping garlic and letting it stand a few minutes before heating lets allinase generate allicin first, before the pan destroys the enzyme. Cooking runs the opposite direction for lycopene, which needs no enzyme: heat and oil break down tomato cell walls and raise absorption substantially, which is why tomato paste outperforms fresh tomato in the panel above.</p>
+    <p><b>Ask three questions of any food before crediting it.</b> Does a realistic portion deliver a dose near what the studies used? Does the preparation preserve or destroy what makes it work? And can the patient actually buy it and eat it regularly? A food that clears all three is worth naming in a consultation. A food that clears only the first is a research finding, not a recommendation.</p>
+  </div>
+
+  <div class="footnote">
+    Nutrient contents are approximate reference values and vary substantially by cultivar, growing conditions, storage, and preparation &mdash; cooking inactivates the myrosinase needed to convert glucoraphanin to sulforaphane, while cooking increases lycopene bioavailability from tomatoes. Trial reference doses are typical values from the human literature and differ across studies and endpoints. Delivered dose is not the same as absorbed dose: curcumin and resveratrol both have poor oral bioavailability, so even a matched intake would not produce matched systemic exposure. This tool illustrates the arithmetic of dietary intake. It is not a prescribing aid, and it does not diagnose, treat, cure or prevent any disease.
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // Compound reference doses from the human trial literature (typical values).
+  var NUTRIENTS = [
+    {id:'fiber',  name:'Dietary fiber',        unit:'g',  trial:30,   color:'#415A4E',
+     why:'Gut bacteria digest it, producing short-chain fatty acids. Butyrate fuels the cells lining the colon and holds the gut barrier together. Short-chain fatty acids also trigger PYY and GLP-1 release \u2014 the same satiety signaling that GLP-1 drugs target.',
+     sub:'Trials of fiber and SCFA outcomes typically use 20\u201340 g/day.'},
+    {id:'sfn',    name:'Sulforaphane',          unit:'mg', trial:30,   color:'#759C8A',
+     why:'The most potent Nrf2 activator in the diet. It induces the cell\u2019s own superoxide dismutase, catalase and glutathione enzymes. Because it switches on production rather than neutralizing radicals itself, one dose raises enzyme output for a day or more.',
+     sub:'Nrf2 trials use roughly 100 g fresh broccoli sprouts, delivering 20\u201340 mg sulforaphane potential.'},
+    {id:'lyc',    name:'Lycopene',              unit:'mg', trial:20,   color:'#a85a6b',
+     why:'Quenches singlet oxygen directly and activates Nrf2. Observational studies link higher lycopene intake to lower rates of coronary heart disease and stroke.',
+     sub:'Carotenoid trials commonly use 15\u201330 mg/day. Cooking and oil raise absorption sharply.'},
+    {id:'o3',     name:'EPA + DHA (omega-3)',   unit:'mg', trial:2000, color:'#7d8fa8',
+     why:'They build into cell membranes and supply the raw material for resolvins and protectins \u2014 molecules that actively shut inflammation down rather than simply blocking it.',
+     sub:'Cardiometabolic and anti-inflammatory trials commonly use 1\u20134 g/day combined.'},
+    {id:'egcg',   name:'EGCG (green tea)',      unit:'mg', trial:400,  color:'#c98a3e',
+     why:'Activates Nrf2 and adds to the polyphenol load most Western diets run short on.',
+     sub:'Polyphenol trials commonly use 300\u2013800 mg EGCG, well above a typical cup.'},
+    {id:'curc',   name:'Curcuminoids',          unit:'mg', trial:1500, color:'#b8860b',
+     why:'Work both sides of the oxidative stress loop: they activate Nrf2 and inhibit NF-\u03baB, the transcription factor that drives inflammatory gene expression.',
+     sub:'Trials use 1,000\u20132,000 mg of 95% curcuminoid extract. Culinary turmeric holds roughly 3% curcuminoids, and the gut absorbs it poorly at any dose.'},
+    {id:'resv',   name:'Resveratrol',           unit:'mg', trial:250,  color:'#8f4356',
+     why:'Activates sirtuins, the NAD+-dependent enzymes that run mitochondrial biogenesis, autophagy and DNA repair. NAD+ availability therefore governs whether it accomplishes anything.',
+     sub:'Trials use 150\u2013500 mg. Grapes, wine, peanuts and berries all carry it in milligram amounts.'}
+  ];
+
+  // Per-serving contents. Approximate reference values.
+  var FOODS = [
+    {g:'Vegetables & legumes', items:[
+      {id:'sprouts', n:'Broccoli sprouts, raw',    s:'100 g (about 2 cups)', c:{sfn:30, fiber:2}, fn:'Sulforaphane', pw:'Nrf2 activation'},
+      {id:'brocc',   n:'Broccoli, mature, cooked', s:'1 cup',                c:{sfn:0.5, fiber:2.6}, fn:'Sulforaphane, fiber', pw:'Nrf2 activation, microbiome'},
+      {id:'legume',  n:'Lentils or beans, cooked', s:'1 cup',                c:{fiber:15}, fn:'Fermentable fiber', pw:'Microbiome, SCFA production'},
+      {id:'kale',    n:'Kale or leafy greens',     s:'100 g',                c:{fiber:3.6}, fn:'Fiber, glucosinolates', pw:'Microbiome, Nrf2 activation'},
+      {id:'tomato',  n:'Tomato paste, cooked',     s:'100 g',                c:{lyc:30, fiber:3}, fn:'Lycopene', pw:'Antioxidant defense, Nrf2'},
+      {id:'tomraw',  n:'Fresh tomato',             s:'1 medium',             c:{lyc:3, fiber:1.5}, fn:'Lycopene', pw:'Antioxidant defense, Nrf2'}
+    ]},
+    {g:'Grains, nuts & fruit', items:[
+      {id:'oats',    n:'Oats, cooked',             s:'1 cup',                c:{fiber:4}, fn:'Beta-glucan fiber', pw:'Microbiome, SCFA production', flag:'Highest glyphosate residues of any cereal \u2014 choose organic'},
+      {id:'berries', n:'Mixed berries',            s:'1 cup',                c:{fiber:8, resv:0.3}, fn:'Fiber, polyphenols', pw:'Microbiome, Nrf2 activation'},
+      {id:'grapes',  n:'Red grapes',               s:'1 cup',                c:{resv:1.5, fiber:1.4}, fn:'Resveratrol', pw:'Sirtuins, NAD+ signaling'},
+      {id:'nuts',    n:'Walnuts',                  s:'30 g',                 c:{fiber:2}, fn:'ALA omega-3, fiber', pw:'Poor conversion to EPA/DHA'}
+    ]},
+    {g:'Fish & drinks', items:[
+      {id:'salmon',  n:'Salmon, farmed',           s:'100 g',                c:{o3:2000}, fn:'EPA + DHA', pw:'Nrf2 activation, resolvin synthesis'},
+      {id:'sardine', n:'Sardines',                 s:'100 g',                c:{o3:1500}, fn:'EPA + DHA', pw:'Nrf2 activation, resolvin synthesis'},
+      {id:'tea',     n:'Green tea, brewed',        s:'1 cup',                c:{egcg:70}, fn:'EGCG catechins', pw:'Nrf2 activation'},
+      {id:'wine',    n:'Red wine',                 s:'150 ml glass',         c:{resv:1}, fn:'Resveratrol', pw:'Sirtuins, NAD+ signaling'}
+    ]},
+    {g:'Spices', items:[
+      {id:'turm',    n:'Turmeric powder',          s:'1 tsp (about 3 g)',    c:{curc:90}, fn:'Curcuminoids', pw:'Nrf2 activation, NF-\u03baB inhibition'},
+      {id:'garlic',  n:'Garlic, crushed',          s:'1 clove',              c:{}, fn:'Allium sulfur compounds', pw:'Nrf2 activation'}
+    ]}
+  ];
+
+  var counts = {};
+  function el(id){ return document.getElementById(id); }
+
+  function buildFoods(){
+    var html = '';
+    for (var g=0; g<FOODS.length; g++){
+      html += '<div class="fgroup"><div class="fgroup-h">'+FOODS[g].g+'</div>';
+      for (var i=0; i<FOODS[g].items.length; i++){
+        var f = FOODS[g].items[i];
+        counts[f.id] = counts[f.id] || 0;
+        html += '<div class="frow">'+
+          '<span class="fname">'+f.n+
+            '<span class="fserv">'+f.s+'</span>'+
+            '<span class="fnut">'+(f.fn||'')+' &rarr; '+(f.pw||'')+'</span>'+
+            (f.flag ? '<span class="fflag">'+f.flag+'</span>' : '')+
+          '</span>'+
+          '<span class="stepper">'+
+            '<button data-dec="'+f.id+'" aria-label="one fewer serving">&minus;</button>'+
+            '<span id="c-'+f.id+'">0</span>'+
+            '<button data-inc="'+f.id+'" aria-label="one more serving">+</button>'+
+          '</span></div>';
+      }
+      html += '</div>';
+    }
+    el('foods').innerHTML = html;
+
+    var incs = document.querySelectorAll('[data-inc]');
+    for (var a=0;a<incs.length;a++){
+      (function(b){ b.addEventListener('click', function(){
+        var k=b.getAttribute('data-inc'); counts[k]=Math.min(12,counts[k]+1); render();
+      }); })(incs[a]);
+    }
+    var decs = document.querySelectorAll('[data-dec]');
+    for (var d=0;d<decs.length;d++){
+      (function(b){ b.addEventListener('click', function(){
+        var k=b.getAttribute('data-dec'); counts[k]=Math.max(0,counts[k]-1); render();
+      }); })(decs[d]);
+    }
+  }
+
+  function totals(){
+    var t = {};
+    for (var ci=0;ci<NUTRIENTS.length;ci++) t[NUTRIENTS[ci].id]=0;
+    for (var g=0;g<FOODS.length;g++){
+      for (var i=0;i<FOODS[g].items.length;i++){
+        var f=FOODS[g].items[i], n=counts[f.id]||0;
+        if (!n) continue;
+        for (var k in f.c){ if (f.c.hasOwnProperty(k)) t[k]=(t[k]||0)+f.c[k]*n; }
+      }
+    }
+    return t;
+  }
+
+  function render(){
+    for (var g=0;g<FOODS.length;g++){
+      for (var i=0;i<FOODS[g].items.length;i++){
+        var f=FOODS[g].items[i], e=el('c-'+f.id);
+        if (e){ e.textContent = counts[f.id]||0; e.className = (counts[f.id]>0)?'on':''; }
+      }
+    }
+
+    var t = totals(), html='', reached=0, missed=[];
+    for (var c=0;c<NUTRIENTS.length;c++){
+      var C=NUTRIENTS[c], got=t[C.id]||0, pct=got/C.trial*100;
+      var shown=Math.min(100,pct);
+      var tag, cls;
+      if (pct>=100){ tag='Trial dose reached'; cls='t-yes'; reached++; }
+      else if (pct>=40){ tag=Math.round(pct)+'% of trial dose'; cls='t-part'; }
+      else { tag=(pct<1?'<1':Math.round(pct))+'% of trial dose'; cls='t-no'; if(got>0||C.id==='curc'||C.id==='resv') missed.push(C.name); }
+
+      var disp = C.unit==='g' ? (Math.round(got*10)/10) : Math.round(got);
+      html += '<div class="cmp">'+
+        '<div class="cmp-top"><span class="cmp-n">'+C.name+'<span class="verdict-tag '+cls+'">'+tag+'</span></span>'+
+        '<span class="cmp-d">'+disp+' / '+C.trial+' '+C.unit+'</span></div>'+
+        '<div class="cmp-bar"><div class="cmp-fill" style="width:'+shown+'%;background:'+C.color+'"></div><div class="cmp-mark"></div></div>'+
+        '<div class="cmp-why">'+C.why+'</div>'+
+        '<div class="cmp-sub">'+C.sub+'</div></div>';
+    }
+    el('compounds').innerHTML = html;
+
+    // food-led readback: what is on the plate and what each item supplies
+    var ph='', anyFood=false;
+    for (var pg=0; pg<FOODS.length; pg++){
+      for (var pi=0; pi<FOODS[pg].items.length; pi++){
+        var pf=FOODS[pg].items[pi], pn=counts[pf.id]||0;
+        if (!pn) continue;
+        anyFood = true;
+        ph += '<div class="plate-row"><span class="plate-q">'+pn+'&times;</span>'+
+              '<span class="plate-n">'+pf.n+
+              '<span class="plate-nut">'+(pf.fn||'')+' &rarr; '+(pf.pw||'')+'</span></span></div>';
+      }
+    }
+    el('plate').innerHTML = anyFood ? ph :
+      '<div class="plate-empty">Nothing selected yet. Each food on the left shows the functional nutrient it supplies and the pathway that nutrient acts on.</div>';
+
+    var any=false;
+    for (var q in counts){ if (counts[q]>0){ any=true; break; } }
+    var msg;
+    if (!any){
+      msg = 'Add servings on the left. The black line on each bar marks the dose used in human trials.';
+    } else {
+      msg = '<b>'+reached+' of '+NUTRIENTS.length+' nutrients at trial-level intake.</b> ';
+      if (reached >= 4) msg += 'Fiber, sulforaphane, lycopene and omega-3 all reach research doses from food. Curcumin and resveratrol do not, at any realistic intake &mdash; that gap is about how concentrated the nutrient is in the food, not about eating more of it.';
+      else msg += 'Keep adding. Fiber, sulforaphane, lycopene and omega-3 can all reach trial levels from food; curcumin and resveratrol cannot, however much you add.';
+    }
+    el('summary').innerHTML = msg;
+  }
+
+  el('resetBtn').addEventListener('click', function(){
+    for (var k in counts) counts[k]=0; render();
+  });
+  el('usBtn').addEventListener('click', function(){
+    for (var k in counts) counts[k]=0;
+    counts.brocc=0; counts.oats=0; counts.tomraw=1; counts.wine=1; counts.nuts=0;
+    render();
+  });
+  el('bestBtn').addEventListener('click', function(){
+    for (var k in counts) counts[k]=0;
+    counts.sprouts=1; counts.legume=2; counts.oats=1; counts.berries=1;
+    counts.kale=1; counts.tomato=1; counts.salmon=1; counts.tea=3; counts.turm=2; counts.grapes=1;
+    render();
+  });
+
+  buildFoods(); render();
+})();
+</script>
+</body>
+</html>
